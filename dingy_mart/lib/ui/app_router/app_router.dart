@@ -20,7 +20,7 @@ class AppRouter{
         );
       case '/accessories':
         return MaterialPageRoute(
-            builder: (_) => const AccessoriesCategorScreen()
+            builder: (_) => const AccessoriesCategoryScreen()
         );
       case '/bottom':
         return MaterialPageRoute(
