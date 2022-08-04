@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "698045517166",
+    "project_id": "dingymart",
+    "storage_bucket": "dingymart.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:698045517166:android:f72e17bb641f7dc891457f",
+        "android_client_info": {
+          "package_name": "com.example.dingy_mart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "698045517166-vronvfeuqc5t8ili06st3l0f3v238rhs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCj3vqYQrz_09jizC9bwOFlb2A01XrrOo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "698045517166-vronvfeuqc5t8ili06st3l0f3v238rhs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:698045517166:android:58beb96cb3e76f7c91457f",
+        "android_client_info": {
+          "package_name": "com.example.ecommerce_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "698045517166-vronvfeuqc5t8ili06st3l0f3v238rhs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDCj3vqYQrz_09jizC9bwOFlb2A01XrrOo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "698045517166-vronvfeuqc5t8ili06st3l0f3v238rhs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
