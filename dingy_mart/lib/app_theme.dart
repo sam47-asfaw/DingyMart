@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class AppTheme{
 
+
   static AppBarTheme appBarTheme = AppBarTheme(
     foregroundColor: Colors.white,
     backgroundColor: Colors.indigo.shade50,
@@ -11,7 +12,8 @@ class AppTheme{
     actionsIconTheme: commonIconTheme,
 
   );
-  static IconThemeData commonIconTheme = const IconThemeData(
+
+   static IconThemeData commonIconTheme = const IconThemeData(
     color: Colors.indigo,
     size: 30.0,
   );
