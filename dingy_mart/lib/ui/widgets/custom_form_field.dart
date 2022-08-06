@@ -1,8 +1,11 @@
-import 'package:dingy_mart/app_theme.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:dingy_mart/app_theme.dart';
+import 'package:dingy_mart/repository/user_dao.dart';
+import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:unicons/unicons.dart';
+import 'common_container.dart';
 
 class CustomFormField extends StatefulWidget {
   final String buttonTitle;
@@ -19,6 +22,16 @@ class CustomFormField extends StatefulWidget {
 class _CustomFormFieldState extends State<CustomFormField> {
   final _formKey = GlobalKey<FormState>();
   final theme = AppTheme.commonTheme();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+
+  @override
+  void dispose(){
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +45,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
         key: _formKey,
         child: Center(
           child:
-            _commonContainer(
+            commonContainer(
               //TODO: Add child widget argument
              Column(
                mainAxisAlignment: MainAxisAlignment.start,
@@ -41,7 +54,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
                  SizedBox(
                    width: 300,
                    height: 100,
-                   child: _commonContainer(
+                   child: commonContainer(
                      //Todo: Add child widget argument
                       Center(
                         child: Text(
@@ -69,17 +82,16 @@ class _CustomFormFieldState extends State<CustomFormField> {
                  _buttonField(widget.buttonTitle, context),
 
                  const SizedBox( height: 10.0,),
-
                  Center(
                    child: Text(
                      'OR',
                      style: theme.textTheme.headline4,
                    ),
                  ),
-                  _googleButtonField(widget.buttonTitle, context),
+                  _googleButtonField(context),
                   _referalLink(widget.buttonTitle, context),
                  const SizedBox( height: 30.0,),
-                 _buildAnnonymousLogin(context),
+                 _buildAnonymousLogin(context),
                ],
              ),
               //TODO: Add optional constraint argument
@@ -128,6 +140,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
       child: Padding(
         padding: const EdgeInsets.all(2.0),
         child: TextField(
+          controller: _emailController,
           obscureText: false,
           decoration: InputDecoration(
             prefixIcon: Icon(
@@ -156,7 +169,6 @@ class _CustomFormFieldState extends State<CustomFormField> {
         ),
       ),
     );
-
   }
 
   Widget _passwordField(){
@@ -165,6 +177,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
       child: Padding(
         padding: const EdgeInsets.all(2.0),
         child: TextField(
+          controller: _passwordController,
           obscureText: true,
           decoration: InputDecoration(
             prefixIcon: Icon(
@@ -215,13 +228,19 @@ class _CustomFormFieldState extends State<CustomFormField> {
               )
           ),
           onPressed: () => (){
-            Navigator.pushNamed(context, '/');
+            if(title == 'Login') {
+              signInUser();
+              Navigator.pushNamed(context, '/');
+            } else if(title == 'Signup'){
+              signUpUser();
+              Navigator.pushNamed(context, '/');
+            }
           }
       ),
     );
   }
 
-  Widget _googleButtonField(String title, BuildContext context){
+  Widget _googleButtonField(BuildContext context){
     return  Padding(
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
@@ -235,7 +254,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
             ),
           ),
           label: Text(
-            '$title with google',
+            'SignIn with google',
             style: theme.textTheme.headline6,
           ),
           icon: Icon(
@@ -244,19 +263,12 @@ class _CustomFormFieldState extends State<CustomFormField> {
             color: Colors.red[600],
           ),
           onPressed: (){
+            context.read<UserDAO>().signInWithGoogle(context);
             Navigator.pushNamed(context, '/');
           },
         ),
 
       ),
-    );
-  }
-
-  Widget _commonContainer(Widget child, [BoxConstraints? _constraints, BoxDecoration? _decoration]){
-    return Container(
-      constraints: _constraints,
-      decoration: _decoration,
-      child: child,
     );
   }
 
@@ -280,7 +292,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
     );
   }
 
-  Widget _buildAnnonymousLogin(BuildContext context){
+  Widget _buildAnonymousLogin(BuildContext context){
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -290,10 +302,28 @@ class _CustomFormFieldState extends State<CustomFormField> {
           style: theme.textTheme.headline4,
         ),
           onPressed: () {
+            context.read<UserDAO>().signInAnonymously(context);
             Navigator.pushNamed(context, '/');
           },
       ),
       ]
+    );
+  }
+
+
+  void signUpUser(){
+    context.read<UserDAO>().signUpWithEmail(
+        email: _emailController.text,
+        password: _passwordController.text,
+        context: context,
+    );
+  }
+
+  void signInUser(){
+    context.read<UserDAO>().signInWithEmail(
+      email: _emailController.text,
+      password: _passwordController.text,
+      context: context,
     );
   }
 }

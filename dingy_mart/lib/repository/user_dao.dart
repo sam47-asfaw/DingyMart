@@ -1,4 +1,4 @@
-
+import 'package:dingy_mart/ui/widgets/common_snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,111 +7,120 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class UserDAO {
 
-    FirebaseAuth auth = FirebaseAuth.instance;
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+
+    UserDAO(_auth);
+    //State persistence
+    Stream<User?> get authState => _auth.authStateChanges();
+
 
     bool isLoggedIn(){
-      return auth.currentUser != null;
+      return _auth.currentUser != null;
     }
 
     String? userId(){
-      return auth.currentUser?.uid;
+      return _auth.currentUser?.uid;
     }
 
     String? email(){
-      return auth.currentUser?.email;
+      return _auth.currentUser?.email;
     }
 
     //Email and password sign up
 
-    signUpWithEmail({required String email, required String password}) async{
-      String message = '';
+    signUpWithEmail({
+      required String email,
+      required String password,
+      required BuildContext context,
+        }) async{
       try{
-        await auth.createUserWithEmailAndPassword(
-            email: email,
-            password: password);
-      } on FirebaseAuthException catch(e){
-        switch(e.code){
-          case 'email-already-in-use':
-            message = 'Email already in use, Please pick another email!';
-            break;
-          case 'operation-not-allowed':
-            message = 'Email/password accounts are not enabled';
-            break;
-          case 'weak-password':
-            message = 'Password must be more than 5 characters';
-            break;
-          case 'too-many-requests':
-            message = 'Too many requests, Please try again later.';
-            break;
-        }
-        return message;
-
-      }
-      catch(e,s){
-        debugPrint(e.toString()+ '$s');
-        return 'Sign up failed.Please try again';
-      }
-
-    }
-
-    //Sign in with email
-
-    signInWithEmail({required String email, required String password}) async{
-      String message = '';
-      try{
-        await auth.signInWithEmailAndPassword(
+        await _auth.createUserWithEmailAndPassword(
             email: email,
             password: password
         );
+        await sendEmailVerification(context);
       } on FirebaseAuthException catch(e){
-        switch(e.code){
-          case 'invalid-email':
-            message = 'Wrong email or password.';
-            break;
-          case 'wrong-password':
-            message = 'Wrong email or password.';
-            break;
-          case 'user-not-found':
-            message = 'No user corresponding to the given email address.';
-            break;
-          case 'user-disabled':
-            message = 'This user has been disabled.';
-            break;
-          case 'too-many-requests':
-            message = 'Too many attempts to sign in as this user.';
-            break;
-        }
-        return message;
+          showSnackBar(context, e.message!);
       }
-      catch(e,s) {
-        debugPrint(e.toString() + '$s');
-        return 'Login attempt failed.Please try again';
-
-      }
-
-
     }
 
+    //Email Verification
+    Future<void> sendEmailVerification(BuildContext context) async{
+      try{
+        _auth.currentUser!.sendEmailVerification();
+        showSnackBar(context, 'Email verification has been sent');
 
+      } on FirebaseAuthException catch(e){
+        showSnackBar(context, e.message!);
+      }
+    }
+
+    //Sign in with email
+    signInWithEmail({
+      required String email,
+          required String password,
+          required BuildContext context,
+        }) async{
+      try{
+        await _auth.signInWithEmailAndPassword(
+            email: email,
+            password: password
+        );
+        if(!_auth.currentUser!.emailVerified){
+          await sendEmailVerification(context);
+        }
+      } on FirebaseAuthException catch(e){
+        showSnackBar(context, e.message!);
+      }
+    }
 
     //Google account sign in
-    Future<UserCredential> signInWithGoogle() async {
-      // Trigger the authentication flow
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    Future<void> signInWithGoogle(BuildContext context) async {
+     try{
+       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+       final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+       if(googleAuth?.accessToken != null && googleAuth?.idToken != null){
+         //create new credential
+         final credential = GoogleAuthProvider.credential(
+           accessToken: googleAuth?.accessToken,
+           idToken: googleAuth?.idToken,
+         );
 
-      // Obtain the auth details from the request
-      final GoogleSignInAuthentication? googleAuth = await googleUser
-          ?.authentication;
+         UserCredential userCredential = await _auth.signInWithCredential(credential);
+       }
 
-      // Create a new credential
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth?.accessToken,
-        idToken: googleAuth?.idToken,
-      );
-
-      // Once signed in, return the UserCredential
-      return await FirebaseAuth.instance.signInWithCredential(credential);
+     } on FirebaseAuthException catch(e){
+       showSnackBar(context, e.message!);
+     }
     }
+
+    //Anonymous Sign-in
+ Future<void> signInAnonymously(BuildContext context) async{
+      try{
+        await _auth.signInAnonymously();
+
+      } on FirebaseAuthException catch(e){
+        showSnackBar(context, e.message!);
+      }
+   }
+   //Sign out
+ Future<void> signOut(BuildContext context) async{
+      try{
+        await _auth.signOut();
+
+      } on FirebaseAuthException catch(e){
+        showSnackBar(context, e.message!);
+      }
+ }
+ //Delete account just incase
+Future<void> deleteAccount(BuildContext context) async{
+      try{
+        await _auth.currentUser!.delete();
+
+      } on FirebaseAuthException catch(e){
+        showSnackBar(context, e.message!);
+      }
+}
 
 
 }
