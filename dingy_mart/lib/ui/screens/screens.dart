@@ -12,6 +12,7 @@ export 'mobiles_category_screen.dart';
 export 'order_detail_screen.dart';
 export 'product_detail_screen.dart';
 export 'profile_screen.dart';
+export 'search_screen.dart';
 export 'signup_screen.dart';
 export 'splash_screen.dart';
 export 'special_offer_screen.dart';

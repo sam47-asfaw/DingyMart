@@ -38,22 +38,22 @@ class UserDAO {
             email: email,
             password: password
         );
-        await sendEmailVerification(context);
+        // await sendEmailVerification(context);
       } on FirebaseAuthException catch(e){
           showSnackBar(context, e.message!);
       }
     }
 
     //Email Verification
-    Future<void> sendEmailVerification(BuildContext context) async{
-      try{
-        _auth.currentUser!.sendEmailVerification();
-        showSnackBar(context, 'Email verification has been sent');
-
-      } on FirebaseAuthException catch(e){
-        showSnackBar(context, e.message!);
-      }
-    }
+    // Future<void> sendEmailVerification(BuildContext context) async{
+    //   try{
+    //     _auth.currentUser!.sendEmailVerification();
+    //     showSnackBar(context, 'Email verification has been sent');
+    //
+    //   } on FirebaseAuthException catch(e){
+    //     showSnackBar(context, e.message!);
+    //   }
+    // }
 
     //Sign in with email
     signInWithEmail({
@@ -66,9 +66,9 @@ class UserDAO {
             email: email,
             password: password
         );
-        if(!_auth.currentUser!.emailVerified){
-          await sendEmailVerification(context);
-        }
+        // if(!_auth.currentUser!.emailVerified){
+        //   await sendEmailVerification(context);
+        // }
       } on FirebaseAuthException catch(e){
         showSnackBar(context, e.message!);
       }

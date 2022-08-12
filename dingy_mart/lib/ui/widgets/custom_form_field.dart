@@ -229,10 +229,18 @@ class _CustomFormFieldState extends State<CustomFormField> {
           ),
           onPressed: () => (){
             if(title == 'Login') {
-              signInUser();
+              context.read<UserDAO>().signUpWithEmail(
+                email: _emailController.text,
+                password: _passwordController.text,
+                context: context,
+              );
               Navigator.pushNamed(context, '/');
             } else if(title == 'Signup'){
-              signUpUser();
+              context.read<UserDAO>().signInWithEmail(
+                email: _emailController.text,
+                password: _passwordController.text,
+                context: context,
+              );
               Navigator.pushNamed(context, '/');
             }
           }
@@ -297,7 +305,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         TextButton(
-        child: Text(
+         child: Text(
           'Continue',
           style: theme.textTheme.headline4,
         ),

@@ -18,6 +18,10 @@ class AppRouter{
         return MaterialPageRoute(
             builder: (_) => const SignupScreen()
         );
+      case '/search':
+        return MaterialPageRoute(
+            builder: (_) => const SearchScreen(appbarTitle: 'DingyMart',)
+        );
       case '/accessories':
         return MaterialPageRoute(
             builder: (_) => const AccessoriesCategoryScreen()

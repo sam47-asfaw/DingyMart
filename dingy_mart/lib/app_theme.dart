@@ -6,7 +6,7 @@ class AppTheme{
 
   static AppBarTheme appBarTheme = AppBarTheme(
     foregroundColor: Colors.white,
-    backgroundColor: Colors.indigo.shade50,
+    backgroundColor: Colors.white,
     shadowColor: Colors.indigo.shade50,
     elevation: 0.8,
     actionsIconTheme: commonIconTheme,
@@ -47,6 +47,11 @@ class AppTheme{
     headline6: GoogleFonts.poppins(
       color: Colors.black87,
       fontSize: 12.0,
+      fontWeight: FontWeight.bold,
+    ),
+    caption: GoogleFonts.poppins(
+      color: Colors.indigo,
+      fontSize: 10.0,
       fontWeight: FontWeight.bold,
     ),
   );

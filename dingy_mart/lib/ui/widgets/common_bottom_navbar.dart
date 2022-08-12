@@ -17,7 +17,7 @@ class _CommonBottomNavBarState extends State<CommonBottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      backgroundColor: Colors.indigo.shade50,
+      backgroundColor: Colors.white,
       type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.indigo.shade600,
