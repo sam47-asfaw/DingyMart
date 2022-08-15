@@ -5,8 +5,8 @@ class SpecialOfferScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.deepPurple,
+    return const Center(
+      child: Text('Special'),
     );
   }
 }

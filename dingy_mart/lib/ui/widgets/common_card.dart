@@ -1,49 +1,29 @@
+import 'package:dingy_mart/ui/widgets/common_snackbar.dart';
 import 'package:flutter/material.dart';
 
-class CommonCard extends StatefulWidget {
+Widget commonCard(BuildContext context, int index, AsyncSnapshot<dynamic>snapshot, ThemeData theme, double width, double height ){
+  return Card(
+    child: ListView.builder(
+      itemCount: snapshot.data.length,
+        itemBuilder: (itemBuilderContext, index){
+          if(!snapshot.hasData){
+            showSnackBar(context, 'Can\'t display data');
+          }
+          else if(snapshot.hasData){
+            return Container(
+              decoration: BoxDecoration(
+                image: snapshot.data[index]
+              ),
+              child: Text(
+                snapshot.data[index],
+                style: theme.textTheme.headline4,
+              ),
+            );
+          }
+          return const CircularProgressIndicator();
+        }
+    ),
 
-  const CommonCard({Key? key}) : super(key: key);
+  );
 
-  @override
-  State<CommonCard> createState() => _CommonCardState();
-}
-
-class _CommonCardState extends State<CommonCard> {
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-
-      onTap: (){
-        Navigator.pushNamed(context, '/productDetail');
-      },
-      child: SizedBox(
-        height: 300,
-        width: 300,
-        child: Card(
-          color: Colors.blue.shade200,
-          shadowColor: Colors.indigo.shade100,
-          elevation: 8.0,
-          borderOnForeground: true,
-          shape:OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(color: Colors.white)
-          ),
-          margin: const EdgeInsets.all(8.0),
-          semanticContainer: true,
-          child: _buildStack(context),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildStack(BuildContext context){
-    return Stack(
-      children: const [
-        //Todo: Add Product Image
-        //Todo: Add Product Detail
-        //Todo: Add Buy Button
-      ],
-    );
-
-  }
 }

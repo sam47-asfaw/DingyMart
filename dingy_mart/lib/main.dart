@@ -1,3 +1,4 @@
+import 'package:dingy_mart/repository/product_dao.dart';
 import 'package:dingy_mart/repository/user_dao.dart';
 import 'package:dingy_mart/ui/auth_wrapper.dart';
 import 'package:flutter/material.dart';
@@ -28,9 +29,12 @@ class MyApp extends StatelessWidget {
         Provider<UserDAO>(
           create:(_) => UserDAO(FirebaseAuth.instance),
         ),
+        Provider<ProductDAO>(
+          create: (_) => ProductDAO(),
+        ),
         StreamProvider(
         create: (context) => context.read<UserDAO>().authState,
-    initialData: null,
+       initialData: null,
     ),
 
       ],

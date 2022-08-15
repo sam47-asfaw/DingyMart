@@ -1,11 +1,10 @@
-import 'package:dingy_mart/ui/widgets/appbar_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dingy_mart/app_theme.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 import 'common_widgets.dart';
+import 'package:dingy_mart/repository/repository.dart';
 
 class CommonScreen extends StatefulWidget {
   final String appBartitle;
@@ -70,7 +69,7 @@ class _CommonScreenState extends State<CommonScreen> {
               _buildMainBody(context, theme,images,titles,width, height),
             ],
           ),
-        bottomNavigationBar: const CommonBottomNavBar(),
+         bottomNavigationBar: const CommonBottomNavBar(),
     );
   }
 
@@ -89,6 +88,8 @@ Widget _buildCategoryBody(BuildContext context,ThemeData theme, images ,titles, 
         _displayUserInfo(context,theme),
         const SizedBox(height: 5.0,),
         _buildCategoryBody(context, theme, images, titles, width, height),
+        const SizedBox(height: 5.0,),
+        _displayProducts(context, theme, height, width),
       ],
     );
  }
@@ -111,4 +112,42 @@ Widget _buildCategoryBody(BuildContext context,ThemeData theme, images ,titles, 
     );
   }
 
+  //product catalog
+Widget _displayProducts(BuildContext context, ThemeData theme, double width, double height){
+    return FutureBuilder(
+      future: context.read<ProductDAO>().getAllProducts(),
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        if (!snapshot.hasData) {
+          showSnackBar(context, 'Data fetch error');
+        }
+        else if (snapshot.hasData) {
+          return _buildCardGrid(context, snapshot, theme, width, height);
+        }
+        return const CircularProgressIndicator();
+      }
+    );
+  }
+
+  Widget _buildCardGrid(BuildContext context, AsyncSnapshot<dynamic> snapshot, ThemeData theme, double height, double width){
+    return GridView.builder(
+    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+      maxCrossAxisExtent: width,
+        childAspectRatio: 3 / 2,
+        crossAxisSpacing: width/3,
+        mainAxisSpacing: height / 4,
+    ),
+    itemBuilder: (BuildContext context, int index){
+      return commonCard(
+        context,
+          index,
+          snapshot,
+          theme,
+          width,
+          height,
+      );
+    }
+  );
+  }
 }
+
+

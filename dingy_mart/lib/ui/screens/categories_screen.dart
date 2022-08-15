@@ -5,8 +5,8 @@ class CategoriesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.cyan,
+    return const Center(
+        child: Text('Categories'),
     );
   }
 }
