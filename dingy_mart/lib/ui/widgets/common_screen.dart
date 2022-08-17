@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dingy_mart/app_theme.dart';
@@ -48,6 +49,15 @@ class _CommonScreenState extends State<CommonScreen> {
     'Home Appliance'
   ];
 
+   late Stream<QuerySnapshot> _allProducts;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _allProducts = context.read<ProductDAO>().getAllProducts();
+  }
+
   @override
   void dispose(){
     super.dispose();
@@ -88,8 +98,9 @@ Widget _buildCategoryBody(BuildContext context,ThemeData theme, images ,titles, 
         _displayUserInfo(context,theme),
         const SizedBox(height: 5.0,),
         _buildCategoryBody(context, theme, images, titles, width, height),
-        const SizedBox(height: 5.0,),
-        _displayProducts(context, theme, height, width),
+        const SizedBox(height: 2.0,),
+       _displayProducts(context, theme, height, width,
+        ),
       ],
     );
  }
@@ -111,42 +122,26 @@ Widget _buildCategoryBody(BuildContext context,ThemeData theme, images ,titles, 
         ],
     );
   }
-
   //product catalog
 Widget _displayProducts(BuildContext context, ThemeData theme, double width, double height){
-    return FutureBuilder(
-      future: context.read<ProductDAO>().getAllProducts(),
-      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        if (!snapshot.hasData) {
-          showSnackBar(context, 'Data fetch error');
+    return StreamBuilder<QuerySnapshot>(
+      stream: _allProducts,
+      builder:(BuildContext context, snapshot){
+        if(snapshot.hasError){
+           showSnackBar(context, snapshot.error.toString());
         }
-        else if (snapshot.hasData) {
-          return _buildCardGrid(context, snapshot, theme, width, height);
-        }
-        return const CircularProgressIndicator();
-      }
-    );
-  }
+        if(snapshot.connectionState == ConnectionState.active){
+          QuerySnapshot<Object?>? querySnapshot = snapshot.data;
+          List<QueryDocumentSnapshot<Object?>>? listQuerySnapshot = querySnapshot?.docs.toList();
+          return commonCardGrid(context, listQuerySnapshot!, theme, width, height);
 
-  Widget _buildCardGrid(BuildContext context, AsyncSnapshot<dynamic> snapshot, ThemeData theme, double height, double width){
-    return GridView.builder(
-    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-      maxCrossAxisExtent: width,
-        childAspectRatio: 3 / 2,
-        crossAxisSpacing: width/3,
-        mainAxisSpacing: height / 4,
-    ),
-    itemBuilder: (BuildContext context, int index){
-      return commonCard(
-        context,
-          index,
-          snapshot,
-          theme,
-          width,
-          height,
-      );
-    }
-  );
+        }
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+
+    );
   }
 }
 

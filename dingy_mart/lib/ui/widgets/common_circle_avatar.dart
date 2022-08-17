@@ -11,10 +11,6 @@ Widget commonCircleAvatar(BuildContext context, ThemeData theme,
     child: SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       physics: const ClampingScrollPhysics(),
-      child: GestureDetector(
-         onTap:(){
-           _onTap(context, _titles);
-         },
         child: SizedBox(
           height: height/4,
           width: width,
@@ -33,10 +29,15 @@ Widget commonCircleAvatar(BuildContext context, ThemeData theme,
                         left: 5.0,
                         right: 5.0,
                     ),
-                    child: CircleAvatar(
-                          backgroundColor: Colors.white,
-                          backgroundImage: AssetImage(_images[index]),
-                          radius: 30,
+                    child: GestureDetector(
+                      onTap: (){
+                        _onTap(context, _titles[index]);
+                      },
+                      child: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            backgroundImage: AssetImage(_images[index]),
+                            radius: 30,
+                      ),
                     ),
                   ),
                   Padding(
@@ -54,47 +55,39 @@ Widget commonCircleAvatar(BuildContext context, ThemeData theme,
             },
           ),
         ),
-      ),
     ),
   );
 }
 
-void _onTap(BuildContext context, List<String> _titles){
-  for(var _title in _titles){
-    switch(_title){
-      case 'Mobile':
-        Navigator.pushNamed(context, '/mobile');
-        break;
-      case 'Electronics':
-        Navigator.pushNamed(context, '/electronics');
-        break;
-      case 'BottomWear':
-        Navigator.pushNamed(context, '/bottom');
-        break;
-      case 'FootWear':
-        Navigator.pushNamed(context, '/foot');
-        break;
-      case 'InnerWear':
-        Navigator.pushNamed(context, '/inner');
-        break;
-      case 'SportsWear':
-        Navigator.pushNamed(context, '/sports');
-        break;
-      case 'Mobiles':
-        Navigator.pushNamed(context, '/mobile');
-        break;
-      case 'WinterWear':
-        Navigator.pushNamed(context, '/winter');
-        break;
-      case 'Accessories':
-        Navigator.pushNamed(context, '/accessories');
-        break;
-      case 'Home Appliance':
-        Navigator.pushNamed(context, '/home');
-        break;
-      default:
-        Navigator.pushNamed(context, '/');
-        break;
+void _onTap(BuildContext context, String _title){
+    if(_title == 'Mobile'){
+      Navigator.pushNamed(context, '/mobile');
     }
-  }
+    else if(_title == 'Electronics'){
+      Navigator.pushNamed(context, '/electronics');
+    }
+    else if(_title == 'BottomWear'){
+      Navigator.pushNamed(context, '/bottom');
+    }
+    else if(_title == 'FootWear'){
+      Navigator.pushNamed(context, '/foot');
+    }
+    else if(_title == 'InnerWear'){
+      Navigator.pushNamed(context, '/inner');
+    }
+    else if(_title == 'SportsWear'){
+      Navigator.pushNamed(context, '/sports');
+    }
+    else if(_title == 'WinterWear'){
+      Navigator.pushNamed(context, '/winter');
+    }
+    else if(_title == 'Accessories'){
+      Navigator.pushNamed(context, '/accessories');
+    }
+    else if(_title == 'Home Appliance'){
+      Navigator.pushNamed(context, '/home');
+    }
+    else{
+      Navigator.pushNamed(context, '/');
+    }
 }

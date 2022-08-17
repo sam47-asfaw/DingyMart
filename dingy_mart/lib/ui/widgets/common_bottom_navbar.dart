@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:unicons/unicons.dart';
 
 import '../../app_theme.dart';
@@ -26,53 +27,66 @@ class _CommonBottomNavBarState extends State<CommonBottomNavBar> {
         unselectedLabelStyle: theme.textTheme.headline6,
 
         showUnselectedLabels: true,
-        onTap: _onItemTapped,
         items:  [
           //Todo: Home navbar
            BottomNavigationBarItem(
-             icon: Icon(
-                       FeatherIcons.home,
+             icon: IconButton(
+                icon: Icon(
+                  FeatherIcons.home,
                        size: theme.iconTheme.size,
                        color: theme.iconTheme.color,
-                     ),
+                    ),
+               onPressed: () {
+                  Navigator.pushNamed(context, '/');
+               },
+             ),
                     label: 'Home',
           ),
 
           //Todo: Categories navbar
            BottomNavigationBarItem(
-            icon: Icon(
-                  FeatherIcons.list,
-                  size: theme.iconTheme.size,
-                  color: theme.iconTheme.color,
-                ),
+            icon: IconButton(
+              icon: Icon(
+                UniconsLine.list_ul,
+                size: theme.iconTheme.size,
+                color: theme.iconTheme.color,
+              ),
+              onPressed: () {
+                Navigator.pushNamed(context, '/categories');
+              },
+            ),
                label: 'Categories',
            ),
           //Todo: cart navbar
            BottomNavigationBarItem(
-            icon: Icon(
-                  FeatherIcons.shoppingCart,
-                  size: theme.iconTheme.size,
-                  color: theme.iconTheme.color,
-                ),
+            icon: IconButton(
+              icon: Icon(
+                FeatherIcons.shoppingCart,
+                size: theme.iconTheme.size,
+                color: theme.iconTheme.color,
+              ),
+              onPressed: () {
+                Navigator.pushNamed(context, '/cart');
+              },
+            ),
                 label: 'MyCart',
           ),
           //Todo: Profile navbar
            BottomNavigationBarItem(
-            icon: Icon(
-                  UniconsLine.user_circle,
-                  size: theme.iconTheme.size,
-                  color: theme.iconTheme.color,
-                ),
+            icon: IconButton(
+              icon: Icon(
+                UniconsLine.user_circle,
+                size: theme.iconTheme.size,
+                color: theme.iconTheme.color,
+              ),
+              onPressed: () {
+                Navigator.pushNamed(context, '/profile');
+              },
+            ),
              label: 'Profile',
            ),
         ],
     );
   }
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    }
-    );
-  }
 }

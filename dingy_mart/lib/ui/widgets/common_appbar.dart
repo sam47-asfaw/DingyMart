@@ -28,7 +28,7 @@ class CommonAppBar extends AppBar{
               color:  theme.iconTheme.color,
             ),
             onPressed: (){
-              Navigator.pushNamed(context, '/wishList');
+              Navigator.pushNamed(context, '/wish');
             },
           ),
           IconButton(

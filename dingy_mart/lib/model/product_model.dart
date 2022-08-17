@@ -45,6 +45,5 @@ class ProductModel{
   //   'id': id.toString(),
   //   'name': name.toString(),
   //   'price': price.toString(),
-  //
   // };
 }
