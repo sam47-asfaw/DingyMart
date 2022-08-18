@@ -1,3 +1,4 @@
+import 'package:dingy_mart/ui/widgets/common_screen.dart';
 import 'package:flutter/material.dart';
 
 class InnerWearCategoryScreen extends StatelessWidget {
@@ -5,8 +6,6 @@ class InnerWearCategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('InnerWear'),
-    );
+    return const CommonScreen(category: 'category',customCategory: 'innerWear');
   }
 }

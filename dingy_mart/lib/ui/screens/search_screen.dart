@@ -6,10 +6,10 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import '../../app_theme.dart';
 
 class SearchScreen extends StatefulWidget {
-  final String appbarTitle;
+  final String appBarTitle;
   const SearchScreen({
     Key? key,
-    required this.appbarTitle,
+    required this.appBarTitle,
   }) : super(key: key);
 
   @override
@@ -35,7 +35,7 @@ class _SearchScreenState extends State<SearchScreen> {
           leadingWidth: double.infinity,
           leading: Center(
             child: Text(
-              widget.appbarTitle,
+              widget.appBarTitle,
               style: theme.textTheme.headline2,
             ),
           ),

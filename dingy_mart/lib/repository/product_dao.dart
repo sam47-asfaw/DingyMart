@@ -12,6 +12,37 @@ class ProductDAO{
     return collectionReference.snapshots();
   }
 
+//get custom category product
+  Stream<QuerySnapshot<Object?>> getCustomProducts([String? category, String? customCategory]){
+    final customProducts = collectionReference.where(category!, isEqualTo: customCategory!).snapshots();
+    return customProducts;
+  }
+
+  //get onSale custom category product
+  Stream<QuerySnapshot<Object?>> getOnSaleCustomProducts([String? category, String? customCategory]){
+    final onSaleCustomProducts = collectionReference
+        .where(category!, isEqualTo: customCategory!)
+        .where("isOnSale", isEqualTo: "true").snapshots();
+    return onSaleCustomProducts;
+  }
+
+  //get topRated custom category product
+  Stream<QuerySnapshot<Object?>> getTopRatedCustomProducts([String? category, String? customCategory]){
+    final topRatedCustomProducts = collectionReference
+        .where(category!, isEqualTo: customCategory!)
+        .where("isTopRated", isEqualTo: "true").snapshots();
+    return topRatedCustomProducts;
+  }
+
+  //get recommended custom category product
+  Stream<QuerySnapshot<Object?>> getRecommendedCustomProducts([String? category, String? customCategory]){
+    final recommendedCustomProducts = collectionReference
+        .where(category!, isEqualTo: customCategory!)
+        .where("isRecommended", isEqualTo: "true").snapshots();
+    return recommendedCustomProducts;
+  }
+
+
   //get accessories category products
 Query<Object?> getAccessoriesProducts(){
     final accessoryProducts = collectionReference

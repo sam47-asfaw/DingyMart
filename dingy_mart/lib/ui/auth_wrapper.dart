@@ -13,7 +13,7 @@ class AuthWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final firebaseUser = context.watch<User?>();
     if(firebaseUser != null){
-      return HomeScreen();
+      return const InnerWearCategoryScreen();
     }
     return AnimatedSplashScreen(
       splash: const SplashScreen(),

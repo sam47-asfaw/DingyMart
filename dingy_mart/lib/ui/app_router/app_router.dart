@@ -20,7 +20,7 @@ class AppRouter{
         );
       case '/search':
         return MaterialPageRoute(
-            builder: (_) => const SearchScreen(appbarTitle: 'DingyMart',)
+            builder: (_) => const SearchScreen(appBarTitle: 'DingyMart',)
         );
       case '/accessories':
         return MaterialPageRoute(
