@@ -6,6 +6,6 @@ class InnerWearCategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CommonScreen(category: 'category',customCategory: 'innerWear');
+    return const CommonScreen(category: 'category');
   }
 }

@@ -27,10 +27,9 @@ class Constants{
     'Home Appliance'
   ];
 
-  static const List<String> scrollTitles =[
+  static const List<String> categoryTitles =[
     'Deals of the Day',
     'Top Rated',
     'Recommended',
-
   ];
 }

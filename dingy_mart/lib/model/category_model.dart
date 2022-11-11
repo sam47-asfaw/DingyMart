@@ -1,3 +1,4 @@
+
 enum CategoryModel{
   winterWear,
   topWear,
@@ -9,4 +10,7 @@ enum CategoryModel{
   mobiles,
   electronics,
   home,
+}
+enumToString(categories){
+  return categories.forEach((category) => category.value.toString());
 }

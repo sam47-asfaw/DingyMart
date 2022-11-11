@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 
-Widget commonCircleAvatar(BuildContext context, ThemeData theme,
+Widget commonCircleAvatar(
+    BuildContext context, ThemeData theme,
     List<String> _images, List<String> _titles,
     double height, double width
     ){
   return Padding(
     padding: const EdgeInsets.only(
       top: 15.0,
+      bottom: 3.0,
     ),
     child: SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       physics: const ClampingScrollPhysics(),
         child: SizedBox(
-          height: height/4,
+          height: height/9,
           width: width,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,

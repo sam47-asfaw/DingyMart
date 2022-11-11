@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'model.dart';
+
 class ProductModel{
   String? id;
   String? name;
@@ -6,7 +8,7 @@ class ProductModel{
   int? quantity;
   String? imgUrl;
   String? description;
-  CategoryModel? category;
+  String? category;
   bool? isOnSale;
   bool? isTopRated;
   bool? isRecommended;
@@ -19,31 +21,21 @@ class ProductModel{
     this.imgUrl,
     this.description,
     this.category,
-    this.isOnSale = false,
-    this.isTopRated = false,
-    this.isRecommended = false,
+    this.isOnSale,
+    this.isTopRated,
+    this.isRecommended,
  });
 
-  get getQuantity => quantity;
-
-  set setQuantity(int quantity) =>  this.quantity = quantity;
-
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
-    id: json["id"] ?? '',
+    id: json['id'] ?? '',
     name: json["name"] ?? '',
-    price : json["price"].toDouble() ?? '',
-    quantity: json["quantity"].toInt()?? '',
+    price : double.tryParse(json["price"]) ?? 0.0,
+    quantity: int.tryParse(json["quantity"]) ?? 1,
     imgUrl: json["imgUrl"] ?? '',
     description: json["description"] ?? '',
-    category: json["category"]?? '',
-    isOnSale: json["isOnSale"]?? '',
-    isTopRated: json["isTopRated"]?? '',
-    isRecommended: json["isRecommended"]?? '',
+    category:  json["category"] ?? '',
+    isOnSale: json["isOnSale"] ?? true,
+    isTopRated: json["isTopRated"]  ?? true,
+    isRecommended: json["isRecommended"] ?? true,
   );
-  //
-  // Map<String, dynamic> toJson() => <String, dynamic>{
-  //   'id': id.toString(),
-  //   'name': name.toString(),
-  //   'price': price.toString(),
-  // };
 }

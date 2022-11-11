@@ -262,8 +262,8 @@ class _CustomFormFieldState extends State<CustomFormField> {
             ),
           ),
           label: Text(
-            'SignIn with google',
-            style: theme.textTheme.headline6,
+            'Continue with google',
+            style: theme.textTheme.headline5,
           ),
           icon: Icon(
             FontAwesomeIcons.google,
