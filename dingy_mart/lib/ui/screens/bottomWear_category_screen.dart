@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import '../widgets/common_screen.dart';
 
 class BottomWearCategoryScreen extends StatelessWidget {
-  const BottomWearCategoryScreen({Key? key}) : super(key: key);
+  final String title;
+  const BottomWearCategoryScreen({Key? key, required this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('BottomWear'),
-    );
+    return CommonScreen(category:title,);
   }
 }

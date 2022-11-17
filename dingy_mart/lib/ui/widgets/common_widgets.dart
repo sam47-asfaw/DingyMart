@@ -9,3 +9,7 @@ export 'common_snackbar.dart';
 export 'custom_form_field.dart';
 export 'on_sale_product_widget.dart';
 export 'top_rated_product_widget.dart';
+export 'recommended_product_widget.dart';
+export 'all_product_display_widget.dart';
+export 'build_product_name_widget.dart';
+export 'build_product_price_widget.dart';

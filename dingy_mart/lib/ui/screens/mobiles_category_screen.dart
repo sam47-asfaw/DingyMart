@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/common_screen.dart';
+
 class MobilesCategoryScreen extends StatelessWidget {
-  const MobilesCategoryScreen({Key? key}) : super(key: key);
+  final String title;
+  const MobilesCategoryScreen({Key? key, required this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Mobile'),
-    );
+    return CommonScreen(category: title,);
   }
 }

@@ -3,12 +3,10 @@ import 'package:dingy_mart/ui/auth_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:dingy_mart/ui/app_router/app_router.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
-import 'package:dingy_mart/model/model.dart';
 import 'package:dingy_mart/repository/repository.dart';
-import 'providers/notifiers.dart';
+//import 'providers/notifiers.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,10 +29,10 @@ class MyApp extends StatelessWidget {
         StreamProvider(
         create: (context) => context.read<UserDAO>().authState,
        initialData: null,
-    ),
-        Provider<ProductNotifier>(
-            create: (_) => ProductNotifier(),
-        )
+       ),
+        Provider<ProductDAO>(
+          create: (_) => ProductDAO(),
+        ),
       ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

@@ -1,21 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dingy_mart/repository/product_dao.dart';
 import 'package:provider/provider.dart';
 import '../../model/product_model.dart';
-import '../../repository/product_dao.dart';
 import 'common_widgets.dart';
 import 'package:flutter/material.dart';
 
-Widget recommendedProductsWidget(BuildContext context, String category,
-    ThemeData theme, double width, double height) {
+Widget allProductDisplayWidget(BuildContext context, ThemeData theme, double width, double height) {
 
-  final _future = Provider.of<ProductDAO>(context).getRecommendedCustomProducts(category: category);
+  final _future = Provider.of<ProductDAO>(context).getAllProducts();
 
   return FutureBuilder<QuerySnapshot<Map<String, dynamic>>> (
       future: _future,
-      // FirebaseFirestore.instance.collection('products')
-      //     .where('category', isEqualTo: category)
-      //     .where('isRecommended', isEqualTo: true)
-      //     .get(),
       builder: (BuildContext context, AsyncSnapshot snapshot){
         if(!snapshot.hasData){
           return const Center(
@@ -24,10 +19,10 @@ Widget recommendedProductsWidget(BuildContext context, String category,
         }
         QuerySnapshot querySnapshot = snapshot.data!;
         final List<QueryDocumentSnapshot> documents = querySnapshot.docs;
-        List<ProductModel> recommendedProductsList = documents.map(
+        List<ProductModel> allProductsList = documents.map(
                 (doc) => ProductModel.fromJson(doc.data() as Map<String, dynamic>)
         ).toList();
-        return commonSingleChildScrollView(context, recommendedProductsList, theme, width, height);
+        return commonSingleChildScrollView(context, allProductsList, theme, width, height);
       }
   );
 }

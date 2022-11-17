@@ -77,6 +77,9 @@ void _onTap(BuildContext context, String _title){
     else if(_title == 'InnerWear'){
       Navigator.pushNamed(context, '/inner');
     }
+    else if(_title == 'TopWear'){
+      Navigator.pushNamed(context, '/top');
+    }
     else if(_title == 'SportsWear'){
       Navigator.pushNamed(context, '/sports');
     }

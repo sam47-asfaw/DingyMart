@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/common_screen.dart';
+
 class TopWearCategoryScreen extends StatelessWidget {
-  const TopWearCategoryScreen({Key? key}) : super(key: key);
+  final String title;
+  const TopWearCategoryScreen({Key? key, required this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('TopWear'),
-    );
+    return CommonScreen(category: title,);
   }
 }

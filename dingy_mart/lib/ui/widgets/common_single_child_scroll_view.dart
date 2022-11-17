@@ -6,13 +6,15 @@ Widget commonSingleChildScrollView(
     BuildContext context,
     List<ProductModel> products,
     ThemeData theme, double width, double height) {
-  return SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              physics: const ClampingScrollPhysics(),
-              child: commonCardGrid(
-                  context, products, theme, height, width
-              ),
+     return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                physics: const ClampingScrollPhysics(),
+                //reverse: true,
+                primary: true,
+                child: commonCardGrid(
+                    context, products, theme, height, width
+                ),
 
-      );
+  );
 
 }

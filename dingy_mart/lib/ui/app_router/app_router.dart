@@ -8,7 +8,7 @@ class AppRouter{
 
       case '/':
         return MaterialPageRoute(
-            builder: (_) =>  HomeScreen()
+            builder: (_) =>  const HomeScreen()
         );
       case '/login':
         return MaterialPageRoute(
@@ -24,11 +24,11 @@ class AppRouter{
         );
       case '/accessories':
         return MaterialPageRoute(
-            builder: (_) => const AccessoriesCategoryScreen()
+            builder: (_) => const AccessoriesCategoryScreen(title:'accessories')
         );
       case '/bottom':
         return MaterialPageRoute(
-            builder: (_) => const BottomWearCategoryScreen()
+            builder: (_) => const BottomWearCategoryScreen(title: 'bottomWear')
         );
       case '/cart':
         return MaterialPageRoute(
@@ -40,23 +40,23 @@ class AppRouter{
         );
       case '/electronics':
         return MaterialPageRoute(
-            builder: (_) => const ElectronicsCategoryScreen()
+            builder: (_) => const ElectronicsCategoryScreen(title: 'electronics')
         );
       case '/foot':
         return MaterialPageRoute(
-            builder: (_) => const FootWearCategoryScreen()
+            builder: (_) => const FootWearCategoryScreen(title: 'footWear')
         );
       case '/home':
         return MaterialPageRoute(
-            builder: (_) => const HomeCategoryScreen()
+            builder: (_) => const HomeCategoryScreen(title: 'home')
         );
       case '/inner':
         return MaterialPageRoute(
-            builder: (_) => const InnerWearCategoryScreen()
+            builder: (_) => const InnerWearCategoryScreen(title: 'innerWear')
         );
       case '/mobile':
         return MaterialPageRoute(
-            builder: (_) => const MobilesCategoryScreen()
+            builder: (_) => const MobilesCategoryScreen(title: 'mobiles')
         );
       case '/order':
         return MaterialPageRoute(
@@ -76,15 +76,15 @@ class AppRouter{
         );
       case '/sports':
         return MaterialPageRoute(
-            builder: (_) => const SportsWearCategoryScreen()
+            builder: (_) => const SportsWearCategoryScreen(title: 'sportsWear')
         );
       case '/top':
         return MaterialPageRoute(
-            builder: (_) => const TopWearCategoryScreen()
+            builder: (_) => const TopWearCategoryScreen(title: 'topWear')
         );
       case '/winter':
         return MaterialPageRoute(
-            builder: (_) => const WinterWearCategoryScreen()
+            builder: (_) => const WinterWearCategoryScreen(title: 'winterWear')
         );
       case '/wish':
         return MaterialPageRoute(

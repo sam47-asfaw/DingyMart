@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../widgets/common_screen.dart';
+
 class WinterWearCategoryScreen extends StatelessWidget {
-  const WinterWearCategoryScreen({Key? key}) : super(key: key);
+  final String title;
+  const WinterWearCategoryScreen({Key? key, required this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('WinterWear'),
-    );
+    return CommonScreen(category: title,);
   }
 }
