@@ -112,7 +112,7 @@ Widget _buildCategoryBody(BuildContext context,ThemeData theme,
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Text(
-                        'Top Rated 💯',
+                        'Top Rated ❤',
                         style: theme.textTheme.headline4,
                       ),
                     ),

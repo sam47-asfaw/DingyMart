@@ -1,3 +1,5 @@
+import 'package:dingy_mart/app_theme.dart';
+import 'package:dingy_mart/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:dingy_mart/ui/screens/screens.dart';
 
@@ -36,7 +38,11 @@ class AppRouter{
         );
       case '/categories':
         return MaterialPageRoute(
-            builder: (_) => const CategoriesScreen()
+            builder: (_) => CategoriesScreen(
+              titles: Constants.titles,
+              images: Constants.images,
+              theme: AppTheme.commonTheme(),
+            )
         );
       case '/electronics':
         return MaterialPageRoute(

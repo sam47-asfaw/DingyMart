@@ -12,10 +12,6 @@ Widget recommendedProductsWidget(BuildContext context, String category,
 
   return FutureBuilder<QuerySnapshot<Map<String, dynamic>>> (
       future: _future,
-      // FirebaseFirestore.instance.collection('products')
-      //     .where('category', isEqualTo: category)
-      //     .where('isRecommended', isEqualTo: true)
-      //     .get(),
       builder: (BuildContext context, AsyncSnapshot snapshot){
         if(!snapshot.hasData){
           return const Center(
