@@ -68,10 +68,12 @@ class AppRouter{
         return MaterialPageRoute(
             builder: (_) => const OrderDetailScreen()
         );
-      case '/productDetail':
-        return MaterialPageRoute(
-            builder: (_) => const ProductDetailScreen()
-        );
+      // case '/productDetail':
+      //   return MaterialPageRoute(
+      //       builder: (_) => ProductDetailScreen(
+      //         product: Co,
+      //       )
+      //   );
       case '/profile':
         return MaterialPageRoute(
             builder: (_) => const ProfileScreen()

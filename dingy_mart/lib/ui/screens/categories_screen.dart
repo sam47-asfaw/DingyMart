@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import '../widgets/common_widgets.dart';
 
 class CategoriesScreen extends StatelessWidget {
     CategoriesScreen ({
@@ -99,7 +99,8 @@ class CategoriesScreen extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                child: Text(
+                                child:
+                                Text(
                                 titles[index],
                                   style: theme.textTheme.headline5,
                                 ),

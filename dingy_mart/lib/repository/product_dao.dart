@@ -1,10 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dingy_mart/model/model.dart';
 
 class ProductDAO{
-
-  CollectionReference collectionReference = FirebaseFirestore.instance.collection('products');
 
   //get all products
   Future<QuerySnapshot<Map<String, dynamic>>> getAllProducts() {

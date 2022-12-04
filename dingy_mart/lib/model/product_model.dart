@@ -1,4 +1,6 @@
 
+import 'package:dingy_mart/model/model.dart';
+
 class ProductModel{
   final String category;
   final String description;
@@ -9,7 +11,7 @@ class ProductModel{
   final String name;
   final int price;
   final int quantity;
-  String? id;
+  final String id;
 
   ProductModel({
     required this.category,
@@ -21,7 +23,7 @@ class ProductModel{
     required this.name,
     required this.price,
     required this.quantity,
-    this.id,
+    required this.id,
  });
 
    factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
@@ -36,4 +38,8 @@ class ProductModel{
     isTopRated: json["isTopRated"]?? true,
     isRecommended: json["isRecommended"]?? true,
   );
+
+  @override
+  bool operator == (Object other) => other is ProductModel && other.id == id;
+
 }
