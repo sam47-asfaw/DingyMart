@@ -7,6 +7,6 @@ class BottomWearCategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CommonScreen(category:title,);
+    return CommonScreen(category: title,);
   }
 }

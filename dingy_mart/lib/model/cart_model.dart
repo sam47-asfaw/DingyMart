@@ -4,13 +4,13 @@ class CartModel{
   final String id;
   final String userId;
   String? productId;
-  final double totalPrice;
+  final double price;
 
   CartModel({
     required this.id,
     required this.userId,
      this.productId,
-    required this.totalPrice,
+    required this.price,
 });
 
   factory CartModel.fromJson(Map<String, dynamic> json){
@@ -18,7 +18,7 @@ class CartModel{
         id: json['id'],
         productId: json['productId'],
         userId: json['userId'],
-        totalPrice: json['totalPrice'],
+        price: json['totalPrice'],
     );
 
   }
@@ -26,7 +26,7 @@ class CartModel{
     'id': id.toString(),
     'productId': productId!.toString(),
     'userId' : userId.toString(),
-    'totalPrice' : totalPrice,
+    'price' : price,
   };
 
 }

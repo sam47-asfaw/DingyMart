@@ -1,3 +1,4 @@
+import 'package:dingy_mart/ui/widgets/common_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:dingy_mart/app_theme.dart';
 import 'package:dingy_mart/repository/user_dao.dart';
@@ -25,7 +26,6 @@ class _CustomFormFieldState extends State<CustomFormField> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-
   @override
   void dispose(){
     super.dispose();
@@ -35,62 +35,48 @@ class _CustomFormFieldState extends State<CustomFormField> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+
     return Scaffold(
-      body: _formField(),
+      body: _formField( width: width, height: height),
     );
   }
 
-  Widget _formField(){
+  Widget _formField({
+    required double width, height
+  }){
     return Form(
         key: _formKey,
         child: Center(
           child:
             commonContainer(
-              //TODO: Add child widget argument
              Column(
-               mainAxisAlignment: MainAxisAlignment.start,
+               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                crossAxisAlignment: CrossAxisAlignment.center,
+               mainAxisSize: MainAxisSize.max,
                children: [
-                 SizedBox(
-                   width: 300,
-                   height: 100,
-                   child: commonContainer(
-                     //Todo: Add child widget argument
                       Center(
                         child: Text(
                            'DingyMart',
                            style: theme.textTheme.headline3,
                          ),
                       ),
-                     const BoxConstraints(
-                       minWidth: 0,
-                       minHeight: 0,
-                       maxWidth: 50.0,
-                       maxHeight: 50.0,
-                     ),
-
-                   ),
-                 ),
-                  _emailField(),
-
-                 const SizedBox( height: 12.0,),
-
-                  _passwordField(),
-
-                 const SizedBox( height: 10.0,),
-
+                 const SizedBox( height: 6.0,),
+                  _emailField(width: width / 1.5),
+                 const SizedBox( height: 4.0,),
+                  _passwordField(width: width / 1.5),
+                 const SizedBox( height: 4.0,),
                  _buttonField(widget.buttonTitle, context),
-
-                 const SizedBox( height: 10.0,),
+                 const SizedBox( height: 4.0,),
                  Center(
                    child: Text(
                      'OR',
-                     style: theme.textTheme.headline4,
+                     style: theme.textTheme.headline5,
                    ),
                  ),
                   _googleButtonField(context),
                   _referalLink(widget.buttonTitle, context),
-                 const SizedBox( height: 30.0,),
                  _buildAnonymousLogin(context),
                ],
              ),
@@ -134,9 +120,9 @@ class _CustomFormFieldState extends State<CustomFormField> {
     );
   }
 
-  Widget _emailField(){
+  Widget _emailField({required double width}){
     return SizedBox(
-      width: 280,
+      width: width,
       child: Padding(
         padding: const EdgeInsets.all(2.0),
         child: TextField(
@@ -171,9 +157,9 @@ class _CustomFormFieldState extends State<CustomFormField> {
     );
   }
 
-  Widget _passwordField(){
+  Widget _passwordField({required double width}){
     return SizedBox(
-      width: 280,
+      width: width ,
       child: Padding(
         padding: const EdgeInsets.all(2.0),
         child: TextField(
@@ -210,7 +196,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
 
   Widget _buttonField(String title, BuildContext context){
     return  SizedBox(
-      height: 50,
+      height: 40,
       width: 150,
       child: TextButton(
           child: Text(
@@ -227,21 +213,40 @@ class _CustomFormFieldState extends State<CustomFormField> {
                   )
               )
           ),
-          onPressed: () => (){
+          onPressed: () async{
             if(title == 'Login') {
-              context.read<UserDAO>().signUpWithEmail(
-                email: _emailController.text,
-                password: _passwordController.text,
-                context: context,
-              );
-              Navigator.pushNamed(context, '/');
+              if(_emailController.text == "" || _passwordController.text == ""){
+                showSnackBar(context, 'All fields are required');
+              } else{
+                User? result = await context.read<UserDAO>().signInWithEmail(
+                  email: _emailController.text,
+                  password: _passwordController.text,
+                  context: context,
+                );
+                if(result != null){
+                  print("success");
+                  print(result.email);
+                }
+
+                Navigator.pushNamed(context, '/');
+              }
             } else if(title == 'Signup'){
-              context.read<UserDAO>().signInWithEmail(
-                email: _emailController.text,
-                password: _passwordController.text,
-                context: context,
-              );
-              Navigator.pushNamed(context, '/');
+              if(_emailController.text == "" || _passwordController.text == ""){
+                showSnackBar(context, 'All fields are required');
+              } else if(_passwordController.text.length < 6){
+                showSnackBar(context, 'Password has to at least 6 characters long');
+              } else {
+                User? result = await context.read<UserDAO>().signUpWithEmail(
+                  email: _emailController.text,
+                  password: _passwordController.text,
+                  context: context,
+                );
+                if(result != null){
+                  print("success");
+                  print(result.email);
+                }
+                Navigator.pushNamed(context, '/');
+              }
             }
           }
       ),
@@ -252,7 +257,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
     return  Padding(
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
-        height: 50,
+        height: 40,
         width: 250,
         child: TextButton.icon(
           style: TextButton.styleFrom(
@@ -263,11 +268,11 @@ class _CustomFormFieldState extends State<CustomFormField> {
           ),
           label: Text(
             'Continue with google',
-            style: theme.textTheme.headline5,
+            style: theme.textTheme.headline6,
           ),
           icon: Icon(
             FontAwesomeIcons.google,
-            size: 30.0,
+            size: 20.0,
             color: Colors.red[600],
           ),
           onPressed: (){

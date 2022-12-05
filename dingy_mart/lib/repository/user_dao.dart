@@ -1,3 +1,4 @@
+import 'package:dingy_mart/model/model.dart';
 import 'package:dingy_mart/ui/widgets/common_snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 
 class UserDAO {
-
     final FirebaseAuth _auth = FirebaseAuth.instance;
 
     UserDAO(_auth);
@@ -27,20 +27,16 @@ class UserDAO {
 
     //Email and password sign up
 
-    signUpWithEmail({
+    Future<User?> signUpWithEmail({
       required String email,
       required String password,
       required BuildContext context,
         }) async{
-      try{
-        await _auth.createUserWithEmailAndPassword(
+       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
             email: email,
             password: password
         );
-        // await sendEmailVerification(context);
-      } on FirebaseAuthException catch(e){
-          showSnackBar(context, e.message!);
-      }
+        return userCredential.user;
     }
 
     //Email Verification
@@ -74,7 +70,7 @@ class UserDAO {
     }
 
     //Google account sign in
-    Future<void> signInWithGoogle(BuildContext context) async {
+    Future<User?> signInWithGoogle(BuildContext context) async {
      try{
        final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
        final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
@@ -86,11 +82,13 @@ class UserDAO {
          );
 
          UserCredential userCredential = await _auth.signInWithCredential(credential);
+         return userCredential.user;
        }
 
      } on FirebaseAuthException catch(e){
        showSnackBar(context, e.message!);
      }
+     return null;
     }
 
     //Anonymous Sign-in

@@ -58,13 +58,9 @@ class ProductDetailScreen extends StatelessWidget {
       ),
       body: Column(
         mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           _buildProductContainer(width: width, height: height),
-
-          const SizedBox(
-            height: 4.0,
-          ),
 
            _buildProductDescriptionWidget(
                 context: context,
@@ -75,7 +71,7 @@ class ProductDetailScreen extends StatelessWidget {
             ),
 
           const SizedBox(
-            height: 4.0,
+            height: 8.0,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -220,7 +216,7 @@ class ProductDetailScreen extends StatelessWidget {
                children: [
                    Text(
                      title,
-                     style: theme.textTheme.headline3,
+                     style: theme.textTheme.headline5,
                      overflow: TextOverflow.ellipsis,
                    ),
                  Text(
@@ -268,14 +264,15 @@ class ProductDetailScreen extends StatelessWidget {
                  ),
                ],
              ),
-             child: Center(
-               child: Text(
-                 description,
-                 style: theme.textTheme.headline6,
-                 overflow: TextOverflow.ellipsis,
-
+               child: Center(
+                 child: Text(
+                   description,
+                   style: theme.textTheme.headline6,
+                   //overflow: TextOverflow.ellipsis,
+                   softWrap: true,
+                   textAlign: TextAlign.center,
+                 ),
                ),
-             ),
            ),
          ],
      );
