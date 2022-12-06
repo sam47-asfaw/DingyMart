@@ -38,10 +38,21 @@ class CartNotifier extends ChangeNotifier {
     }
   }
 
-  void removeProdcutsFromCart(){
+  void removeAproductFromCart({required ProductModel product}){
+    final cartDocRefernce = FirebaseFirestore.instance.collection('cart').doc();
+    if(_item.containsKey(product.id)){
+        _item.remove(product);
+        cartDocRefernce.set(_item);
+        notifyListeners();
+    }
+  }
+
+  void removeAllProdcutsFromCart(){
+    final cartDocRefernce = FirebaseFirestore.instance.collection('cart').doc();
     _item.clear();
+    cartDocRefernce.set(_item);
     notifyListeners();
-}
+ }
 
    double get totalPrice {
     double totalPrice = 0.0;

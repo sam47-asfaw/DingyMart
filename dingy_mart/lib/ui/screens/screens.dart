@@ -1,6 +1,6 @@
 export 'accessories_category_screen.dart';
 export 'bottomWear_category_screen.dart';
-export 'cart_screen.dart';
+export 'registered_user_cart_screen.dart';
 export 'categories_screen.dart';
 export 'home_screen.dart';
 export 'login_screen.dart';

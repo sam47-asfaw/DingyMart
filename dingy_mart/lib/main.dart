@@ -6,7 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:dingy_mart/repository/repository.dart';
-//import 'providers/notifiers.dart';
+import 'providers/notifiers.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +32,9 @@ class MyApp extends StatelessWidget {
        ),
         Provider<ProductDAO>(
           create: (_) => ProductDAO(),
+        ),
+        Provider<CartNotifier>(
+          create: (_) => CartNotifier(),
         ),
       ],
         child: MaterialApp(

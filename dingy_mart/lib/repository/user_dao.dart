@@ -32,23 +32,20 @@ class UserDAO {
       required String password,
       required BuildContext context,
         }) async{
-       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+      try {
+        UserCredential userCredential = await _auth
+            .createUserWithEmailAndPassword(
             email: email,
             password: password
         );
         return userCredential.user;
-    }
+      } on FirebaseAuthException catch(e){
+        showSnackBar(context, e.message.toString());
 
-    //Email Verification
-    // Future<void> sendEmailVerification(BuildContext context) async{
-    //   try{
-    //     _auth.currentUser!.sendEmailVerification();
-    //     showSnackBar(context, 'Email verification has been sent');
-    //
-    //   } on FirebaseAuthException catch(e){
-    //     showSnackBar(context, e.message!);
-    //   }
-    // }
+      } catch(e){
+        print(e);
+      }
+    }
 
     //Sign in with email
     signInWithEmail({
@@ -61,11 +58,10 @@ class UserDAO {
             email: email,
             password: password
         );
-        // if(!_auth.currentUser!.emailVerified){
-        //   await sendEmailVerification(context);
-        // }
       } on FirebaseAuthException catch(e){
-        showSnackBar(context, e.message!);
+        showSnackBar(context, e.message.toString());
+      } catch(e){
+        print(e);
       }
     }
 

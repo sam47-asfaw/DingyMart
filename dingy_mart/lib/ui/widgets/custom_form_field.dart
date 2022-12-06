@@ -223,10 +223,6 @@ class _CustomFormFieldState extends State<CustomFormField> {
                   password: _passwordController.text,
                   context: context,
                 );
-                if(result != null){
-                  print("success");
-                  print(result.email);
-                }
 
                 Navigator.pushNamed(context, '/');
               }
@@ -241,10 +237,6 @@ class _CustomFormFieldState extends State<CustomFormField> {
                   password: _passwordController.text,
                   context: context,
                 );
-                if(result != null){
-                  print("success");
-                  print(result.email);
-                }
                 Navigator.pushNamed(context, '/');
               }
             }
