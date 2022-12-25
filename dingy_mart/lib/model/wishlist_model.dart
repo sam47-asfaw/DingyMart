@@ -2,25 +2,25 @@ import 'model.dart';
 
 class WishListModel{
   final String id;
-  List<ProductModel>? products;
-  final String userId;
+  final String title;
+  final String imgUrl;
 
   WishListModel({
     required this.id,
-    required this.userId,
-    required this.products,
+    required this.title,
+    required this.imgUrl,
 });
 
  factory WishListModel.fromJson(Map<String, dynamic> json){
     return WishListModel(
       id: json['id'],
-      userId: json['userId'],
-      products: json['products'],
+      title: json['userId'] ?? '',
+      imgUrl: json['products'] ?? '',
     );
   }
   Map<String, dynamic> toJson() => <String, dynamic>{
     'id' : id.toString(),
-    'userId' : userId,
-    'productId': products!.toList(),
+    'title' : title,
+    'imgUrl': imgUrl,
   };
 }

@@ -6,8 +6,8 @@ import 'package:flutter/foundation.dart';
 class CartDAO{
 
 //get products from firestore collection cart
-  getProductFromCart() async{
-   final cartProductsReference = await FirebaseFirestore.instance.collection('products').get();
+  Future<QuerySnapshot<Map<String, dynamic>>> getProductFromCart() async{
+   final cartProductsReference = await FirebaseFirestore.instance.collection('cart').get();
     return cartProductsReference;
  }
 

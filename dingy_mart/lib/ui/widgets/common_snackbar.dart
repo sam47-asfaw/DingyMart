@@ -6,7 +6,7 @@ void showSnackBar(BuildContext context, String content) {
   final snackBar = SnackBar(
     content: Text(
       content,
-      style: theme.textTheme.headline3,
+      style: theme.textTheme.headline5,
     ),
     backgroundColor: Colors.white,
   );

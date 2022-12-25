@@ -1,8 +1,12 @@
 import 'package:dingy_mart/app_theme.dart';
 import 'package:dingy_mart/model/model.dart';
+import 'package:dingy_mart/ui/widgets/common_snackbar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
+import 'package:dingy_mart/providers/notifiers.dart';
 
 class ProductDetailScreen extends StatelessWidget {
 
@@ -19,6 +23,7 @@ class ProductDetailScreen extends StatelessWidget {
     final theme = AppTheme.commonTheme();
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+    final wishList = Provider.of<WishListNotifier>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -51,7 +56,8 @@ class ProductDetailScreen extends StatelessWidget {
               color:  theme.iconTheme.color,
             ),
             onPressed: (){
-              Navigator.pushNamed(context, '/wish');
+              wishList.addProductToWishList(product: product);
+              showSnackBar(context, 'Product added to wishlist');
             },
           ),
         ],
@@ -77,7 +83,7 @@ class ProductDetailScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             mainAxisSize: MainAxisSize.max,
             children: [
-              _buildButtonWidget(
+              _buildBuyButtonWidget(
                 context: context,
                routeName: '/order',
                color: Colors.yellow.shade500,
@@ -88,8 +94,12 @@ class ProductDetailScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-              const SizedBox(width: 12.0,),
-              _buildButtonWidget(
+              const SizedBox(width: 6.0,),
+
+              _buildCartButtonWidget(
+                product: product,
+                productId: product.id,
+                price: product.price.toDouble(),
                 context: context,
                 routeName: '/cart',
                 color: Colors.blue.shade50,
@@ -278,14 +288,47 @@ class ProductDetailScreen extends StatelessWidget {
      );
    }
 
-   // buy and cart button widget
-  _buildButtonWidget({
-    required BuildContext context,
-    required String routeName,
-    required Color color,
-    required Widget child,
+   //buy button
+
+   _buildBuyButtonWidget({
+         required BuildContext context,
+         required String routeName,
+         required Color color,
+         required Widget child,
+       }
+       ){
+     return Material(
+       shape: RoundedRectangleBorder(
+         borderRadius:BorderRadius.circular(10.0),
+       ),
+       elevation: 16.0,
+       color: color,
+       clipBehavior: Clip.antiAlias,
+       child: MaterialButton(
+         minWidth: 100,
+         height: 50,
+         onPressed: () {
+             Navigator.pushNamed(context, routeName);
+         },
+         child: child,
+       ),
+     );
+
+   }
+
+   // cart button widget
+  _buildCartButtonWidget(
+      {
+        required String productId,
+       required double price,
+       required BuildContext context,
+      required String routeName,
+      required Color color,
+      required Widget child,
+        required ProductModel product,
   })
   {
+    final cart = Provider.of<CartNotifier>(context);
     return Material(
       shape: RoundedRectangleBorder(
           borderRadius:BorderRadius.circular(10.0),
@@ -297,12 +340,15 @@ class ProductDetailScreen extends StatelessWidget {
         minWidth: 100,
         height: 50,
           onPressed: () {
-            Navigator.pushNamed(context, routeName);
+            cart.addProductToCart(product: product);
+            showSnackBar(context, 'Product added to cart');
+           // }
           },
           child: child,
       ),
     );
   }
+
 
 }
 

@@ -32,10 +32,17 @@ class AppRouter{
         return MaterialPageRoute(
             builder: (_) => const BottomWearCategoryScreen(title: 'bottomWear')
         );
+
       case '/cart':
         return MaterialPageRoute(
-            builder: (_) => const CartScreen()
+            builder: (_) => CartScreen()
         );
+
+      case '/emptyCart':
+        return MaterialPageRoute(
+            builder: (_) => const EmptyCartScreen()
+        );
+
       case '/categories':
         return MaterialPageRoute(
             builder: (_) => CategoriesScreen(
