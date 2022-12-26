@@ -18,7 +18,7 @@ class AuthWrapper extends StatelessWidget {
     return AnimatedSplashScreen(
       splash: const SplashScreen(),
       duration: 3500,
-       splashTransition:SplashTransition.fadeTransition,
+       //splashTransition:SplashTransition.fadeTransition,
       nextScreen: const LoginScreen(),
     );
   }

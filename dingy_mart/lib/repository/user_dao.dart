@@ -45,6 +45,7 @@ class UserDAO {
       } catch(e){
         print(e);
       }
+      return null;
     }
 
     //Sign in with email
@@ -113,7 +114,6 @@ Future<void> deleteAccount(BuildContext context) async{
       } on FirebaseAuthException catch(e){
         showSnackBar(context, e.message!);
       }
-}
-
+  }
 
 }

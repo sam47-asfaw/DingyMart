@@ -3,6 +3,8 @@ import 'package:dingy_mart/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:dingy_mart/ui/screens/screens.dart';
 
+import '../../model/product_model.dart';
+
 class AppRouter{
 
   Route? onGenerateRoute(RouteSettings settings){
@@ -71,10 +73,10 @@ class AppRouter{
         return MaterialPageRoute(
             builder: (_) => const MobilesCategoryScreen(title: 'mobiles')
         );
-      case '/order':
-        return MaterialPageRoute(
-            builder: (_) => const OrderDetailScreen()
-        );
+      // case '/order':
+      //   return MaterialPageRoute(
+      //       builder: (_) => OrderDetailScreen(product: product),
+      //   );
       // case '/productDetail':
       //   return MaterialPageRoute(
       //       builder: (_) => ProductDetailScreen(
@@ -83,12 +85,9 @@ class AppRouter{
       //   );
       case '/profile':
         return MaterialPageRoute(
-            builder: (_) => const ProfileScreen()
+            builder: (_) =>  ProfileScreen()
         );
-      case '/offer':
-        return MaterialPageRoute(
-            builder: (_) => const SpecialOfferScreen()
-        );
+
       case '/sports':
         return MaterialPageRoute(
             builder: (_) => const SportsWearCategoryScreen(title: 'sportsWear')

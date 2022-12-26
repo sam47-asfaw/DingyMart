@@ -1,4 +1,5 @@
 import 'package:dingy_mart/providers/cart_notifier.dart';
+import 'package:dingy_mart/ui/screens/screens.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -133,7 +134,6 @@ class _CartScreenState extends State<CartScreen> {
                                             Text(product.price.toString() + '\$' ?? '',
                                               style: theme.textTheme.headline5,
                                             ),
-
                                           ],
                                         ),
                                       ),
@@ -146,16 +146,63 @@ class _CartScreenState extends State<CartScreen> {
                          ),
                         ),
                     const Divider(),
-                  Align(
-                      alignment: Alignment.center,
-                    child: Text(
-                      'TOTAL: ${context.select((CartNotifier cart) => cart.total)}',
-                      style: theme.textTheme.headline3,
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10.0),
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            'TOTAL: ${context.select((CartNotifier cart) => cart.total)}',
+                            style: theme.textTheme.headline3,
+                          ),
+                          const SizedBox(width: 8.0,),
+                          _buyProductsButton(
+                            context: context,
+                            color: Colors.yellow.shade500,
+                            onPressed: (){
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CartCheckOutScreen(cart: context.select((CartNotifier cart) => cart.cart)),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              'Proceed to Buy',
+                              style: theme.textTheme.headline3,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   )
                 ],
             );
           },
+        ),
+    );
+  }
+
+  Widget _buyProductsButton({
+    required BuildContext context,
+    required Color color,
+    required VoidCallback onPressed,
+    required Widget child,
+  }){
+    return Material(
+        shape: RoundedRectangleBorder(
+        borderRadius:BorderRadius.circular(10.0),
+    ),
+       elevation: 16.0,
+       color: color,
+       clipBehavior: Clip.antiAlias,
+       child: MaterialButton(
+       minWidth: 100,
+        height: 50,
+       onPressed: onPressed,
+         child: child,
         ),
     );
   }

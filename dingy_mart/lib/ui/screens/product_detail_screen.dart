@@ -1,7 +1,7 @@
 import 'package:dingy_mart/app_theme.dart';
 import 'package:dingy_mart/model/model.dart';
+import 'package:dingy_mart/ui/screens/order_detail_screen.dart';
 import 'package:dingy_mart/ui/widgets/common_snackbar.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:provider/provider.dart';
@@ -84,6 +84,7 @@ class ProductDetailScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             children: [
               _buildBuyButtonWidget(
+                product: product,
                 context: context,
                routeName: '/order',
                color: Colors.yellow.shade500,
@@ -278,7 +279,6 @@ class ProductDetailScreen extends StatelessWidget {
                  child: Text(
                    description,
                    style: theme.textTheme.headline6,
-                   //overflow: TextOverflow.ellipsis,
                    softWrap: true,
                    textAlign: TextAlign.center,
                  ),
@@ -295,6 +295,7 @@ class ProductDetailScreen extends StatelessWidget {
          required String routeName,
          required Color color,
          required Widget child,
+        required ProductModel product,
        }
        ){
      return Material(
@@ -308,7 +309,12 @@ class ProductDetailScreen extends StatelessWidget {
          minWidth: 100,
          height: 50,
          onPressed: () {
-             Navigator.pushNamed(context, routeName);
+           Navigator.push(
+             context,
+             MaterialPageRoute(
+               builder: (context) => OrderDetailScreen(product: product),
+             ),
+           );
          },
          child: child,
        ),
