@@ -52,7 +52,7 @@ class _CustomFormFieldState extends State<CustomFormField> {
           child:
             commonContainer(
              Column(
-               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                crossAxisAlignment: CrossAxisAlignment.center,
                mainAxisSize: MainAxisSize.max,
                children: [
@@ -62,22 +62,10 @@ class _CustomFormFieldState extends State<CustomFormField> {
                            style: theme.textTheme.headline3,
                          ),
                       ),
-                 const SizedBox( height: 6.0,),
                   _emailField(width: width / 1.5),
-                 const SizedBox( height: 4.0,),
                   _passwordField(width: width / 1.5),
-                 const SizedBox( height: 4.0,),
                  _buttonField(widget.buttonTitle, context),
-                 const SizedBox( height: 4.0,),
-                 Center(
-                   child: Text(
-                     'OR',
-                     style: theme.textTheme.headline5,
-                   ),
-                 ),
-                  _googleButtonField(context),
                   _referalLink(widget.buttonTitle, context),
-                 _buildAnonymousLogin(context),
                ],
              ),
               //TODO: Add optional constraint argument
@@ -245,38 +233,6 @@ class _CustomFormFieldState extends State<CustomFormField> {
     );
   }
 
-  Widget _googleButtonField(BuildContext context){
-    return  Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: SizedBox(
-        height: 40,
-        width: 250,
-        child: TextButton.icon(
-          style: TextButton.styleFrom(
-            backgroundColor: Colors.lightBlue.shade50,
-            shape:RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-          ),
-          label: Text(
-            'Continue with google',
-            style: theme.textTheme.headline6,
-          ),
-          icon: Icon(
-            FontAwesomeIcons.google,
-            size: 20.0,
-            color: Colors.red[600],
-          ),
-          onPressed: (){
-            context.read<UserDAO>().signInWithGoogle(context);
-            Navigator.pushNamed(context, '/');
-          },
-        ),
-
-      ),
-    );
-  }
-
   Widget _referalLink(String link, BuildContext context){
     return Center(
       child: TextButton(
@@ -294,24 +250,6 @@ class _CustomFormFieldState extends State<CustomFormField> {
           Navigator.pushNamed(context, '/login');
         },
       ),
-    );
-  }
-
-  Widget _buildAnonymousLogin(BuildContext context){
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        TextButton(
-         child: Text(
-          'Continue',
-          style: theme.textTheme.headline4,
-        ),
-          onPressed: () {
-            context.read<UserDAO>().signInAnonymously(context);
-            Navigator.pushNamed(context, '/');
-          },
-      ),
-      ]
     );
   }
 

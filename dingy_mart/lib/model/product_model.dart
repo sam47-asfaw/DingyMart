@@ -1,4 +1,6 @@
 
+import 'dart:ui';
+
 import 'package:dingy_mart/model/model.dart';
 
 class ProductModel{
@@ -39,7 +41,5 @@ class ProductModel{
     isRecommended: json["isRecommended"]?? true,
   );
 
-  @override
-  bool operator == (Object other) => other is ProductModel && other.id == id;
 
 }

@@ -1,31 +1,49 @@
+import 'package:dingy_mart/db/dingy_mart_db.dart';
 import 'package:dingy_mart/model/model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../repository/user_dao.dart';
 
 
 class CartNotifier with ChangeNotifier {
-   List<ProductModel> _cart = [];
 
-  List<ProductModel> get cart => _cart;
+  DingyMartDB dingyMartDB = DingyMartDB();
 
-  double get total {
-    return _cart.fold(0.0, (double currentTotal, ProductModel nextProduct) {
-      return currentTotal + nextProduct.price;
-    });
+   late List<ProductModel> cart = [];
+
+   //get cart
+  Future<List<ProductModel>> getCartData() async {
+    cart = (await dingyMartDB.getCart()).cast<ProductModel>();
+    notifyListeners();
+    return cart;
   }
 
   void addProductToCart({required ProductModel product}) {
-    _cart.add(product);
+    if(cart.contains(product)){
+      cart.remove(product);
+    }
+    cart.add(product);
     notifyListeners();
   }
 
   void removeProductFromCart(ProductModel product) {
-    _cart.remove(product);
+      final index = cart.indexOf(product);
+      cart.removeAt(index);
+      notifyListeners();
+    }
+
+
+  void removeAllProductsFromCart(){
+    cart.clear();
+    dingyMartDB.deleteAllCartItem();
     notifyListeners();
   }
 
-  void removeAllProductsFromCart(){
-    _cart.clear();
-    notifyListeners();
-  }
+   double get total {
+     return cart.fold(0.0, (double currentTotal, ProductModel nextProduct) {
+       return currentTotal + nextProduct.price;
+     });
+   }
 
 }

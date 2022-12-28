@@ -1,7 +1,10 @@
+import 'package:dingy_mart/db/dingy_mart_db.dart';
 import 'package:dingy_mart/providers/cart_notifier.dart';
 import 'package:dingy_mart/ui/screens/screens.dart';
+import 'package:dingy_mart/ui/widgets/common_snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
@@ -21,6 +24,13 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   final theme = AppTheme.commonTheme();
+  DingyMartDB dingyMartDB = DingyMartDB();
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<CartNotifier>().getCartData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,19 +67,14 @@ class _CartScreenState extends State<CartScreen> {
           ),
           centerTitle: true,
           actions: [
-            TextButton.icon(
+            TextButton(
                 onPressed: (){
                   context.read<CartNotifier>().removeAllProductsFromCart();
                 },
-                icon: const Icon(
-                  UniconsLine.trash_alt,
-                  color: Colors.red,
-                  size: 14.0,
-                ),
-                label: Text(
+               child: Text(
                     'Remove all',
-                  style: GoogleFonts.poppins(
-                    fontSize: 10,
+                    style: GoogleFonts.poppins(
+                    fontSize: 15,
                     color: Colors.red,
                   ),
                 )
@@ -77,7 +82,7 @@ class _CartScreenState extends State<CartScreen> {
           ],
         ),
         body: Consumer<CartNotifier>(
-          builder:  (BuildContext context, CartNotifier cart, Widget? child){
+          builder:  (BuildContext context, cart,  child){
             return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -97,15 +102,7 @@ class _CartScreenState extends State<CartScreen> {
                           );
                         }
                         final product = cart.cart[index];
-                        return Dismissible(
-                          key: UniqueKey(),
-                          onDismissed: (direction) {
-                            setState(() {
-                              context.read<CartNotifier>().removeProductFromCart(
-                                  product);
-                            });
-                          },
-                          child: Card(
+                        return Card(
                             color: Colors.white,
                              elevation: 2.0,
                               child: Padding(
@@ -137,14 +134,25 @@ class _CartScreenState extends State<CartScreen> {
                                           ],
                                         ),
                                       ),
+                                         IconButton(
+                                          onPressed: () {
+                                            dingyMartDB.deleteCartItem(product.id);
+                                            context.read<CartNotifier>().removeProductFromCart(product);
+                                            showSnackBar(context, 'Product removed from Cart');
+                                          },
+                                          icon: const Icon(
+                                            FeatherIcons.trash2,
+                                          color: Colors.red,
+                                          size: 30.0,
+                                         ),
+                                        ),
                                     ],
                                 ),
                               ),
-                            ),
                           );
                           }
                          ),
-                        ),
+                     ),
                     const Divider(),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 10.0),
@@ -165,7 +173,7 @@ class _CartScreenState extends State<CartScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => CartCheckOutScreen(cart: context.select((CartNotifier cart) => cart.cart)),
+                                  builder: (context) => const CartCheckOutScreen(),
                                 ),
                               );
                             },

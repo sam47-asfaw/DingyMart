@@ -1,35 +1,48 @@
+import 'package:flutter/cupertino.dart';
+
 import 'model.dart';
+
+const String cartTable = 'cart';
+
+class CartFields{
+  static const String id = '_id';
+  static const String userId = 'userId';
+  static const String title = 'title';
+  static const String imgUrl = 'imgUrl';
+  static const String price = 'price';
+
+}
 
 class CartModel{
   final String id;
+  final String? userId;
   final String title;
   final String imgUrl;
   final String price;
-  final int quantity;
 
   CartModel({
      required this.id,
+     this.userId,
     required this.title,
     required this.imgUrl,
     required this.price,
-    required this.quantity,
 });
 
   factory CartModel.fromJson(Map<String, dynamic> json) =>
      CartModel(
-        id: json['id'] ?? '',
-        title: json['title'] ?? '',
-        imgUrl: json['imgUrl'] ?? '',
-        price: json['price'] ?? '',
-        quantity: json['quantity'] ?? 1,
+        id: json[CartFields.id] as String?? '',
+        userId: json[CartFields.userId] as String?? '',
+        title: json[CartFields.title] as String ?? '',
+        imgUrl: json[CartFields.imgUrl] as String ?? '',
+        price: json[CartFields.price] as String ?? '',
     );
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-    'id': id.toString(),
-    'title': title,
-    'imgUrl': imgUrl,
-    'price' : price.toString(),
-    'quantity': quantity,
+    CartFields.id: id,
+    CartFields.userId: userId,
+    CartFields.title: title,
+    CartFields.imgUrl: imgUrl,
+    CartFields.price : price.toString(),
   };
 
 }

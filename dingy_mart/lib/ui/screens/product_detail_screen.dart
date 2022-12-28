@@ -1,4 +1,5 @@
 import 'package:dingy_mart/app_theme.dart';
+import 'package:dingy_mart/db/dingy_mart_db.dart';
 import 'package:dingy_mart/model/model.dart';
 import 'package:dingy_mart/ui/screens/order_detail_screen.dart';
 import 'package:dingy_mart/ui/widgets/common_snackbar.dart';
@@ -7,6 +8,8 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 import 'package:dingy_mart/providers/notifiers.dart';
+
+import '../../repository/user_dao.dart';
 
 class ProductDetailScreen extends StatelessWidget {
 
@@ -56,8 +59,8 @@ class ProductDetailScreen extends StatelessWidget {
               color:  theme.iconTheme.color,
             ),
             onPressed: (){
-              wishList.addProductToWishList(product: product);
-              showSnackBar(context, 'Product added to wishlist');
+              context.read<WishListNotifier>().addProductToWishList(product: product,);
+              showSnackBar(context, 'Product added to WishList');
             },
           ),
         ],
@@ -67,7 +70,6 @@ class ProductDetailScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           _buildProductContainer(width: width, height: height),
-
            _buildProductDescriptionWidget(
                 context: context,
                 theme: theme,
@@ -335,6 +337,8 @@ class ProductDetailScreen extends StatelessWidget {
   })
   {
     final cart = Provider.of<CartNotifier>(context);
+    final userId = Provider.of<UserDAO>(context).userId();
+    DingyMartDB dingyMartDB = DingyMartDB();
     return Material(
       shape: RoundedRectangleBorder(
           borderRadius:BorderRadius.circular(10.0),
@@ -346,8 +350,15 @@ class ProductDetailScreen extends StatelessWidget {
         minWidth: 100,
         height: 50,
           onPressed: () {
-            cart.addProductToCart(product: product);
-            showSnackBar(context, 'Product added to cart');
+            dingyMartDB.insertIntoCart(
+               userId!,
+              product.id,
+              product,
+            );
+            cart.addProductToCart(
+              product: product,
+            );
+            showSnackBar(context, 'Product added to Cart');
            // }
           },
           child: child,

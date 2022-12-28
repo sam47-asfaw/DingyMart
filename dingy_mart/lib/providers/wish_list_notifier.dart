@@ -1,27 +1,36 @@
 
+import 'package:dingy_mart/db/dingy_mart_db.dart';
 import 'package:dingy_mart/model/model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../repository/user_dao.dart';
 
 
 class WishListNotifier with ChangeNotifier {
-  final List<ProductModel> _wishList = [];
+  DingyMartDB dingyMartDB = DingyMartDB();
 
-  List<ProductModel> get wishList => _wishList;
+  final List<ProductModel> wishList = [];
 
 
+  void addProductToWishList({required ProductModel product}){
 
-  void addProductToWishList({required ProductModel product}) {
-    _wishList.add(product);
+    if(wishList.contains(product)){
+      wishList.remove(product);
+    }
+    wishList.add(product);
     notifyListeners();
   }
 
   void removeProductFromWishList(ProductModel product) {
-    _wishList.remove(product);
+    final index = wishList.indexOf(product);
+    wishList.removeAt(index);
     notifyListeners();
   }
 
   void removeAllProductsFromWishList(){
-    _wishList.clear();
+    wishList.clear();
+    dingyMartDB.deleteAllWishListItem();
     notifyListeners();
   }
 

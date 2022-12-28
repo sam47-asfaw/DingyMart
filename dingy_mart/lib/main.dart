@@ -35,9 +35,6 @@ class MyApp extends StatelessWidget {
         Provider<ProductDAO>(
           create: (_) => ProductDAO(),
         ),
-        Provider<CartDAO>(
-          create: (_) => CartDAO(),
-        ),
         Provider<UserDAO>(
           create: (_) => UserDAO(UserCredential),
         ),

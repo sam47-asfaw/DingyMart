@@ -1,12 +1,14 @@
-import 'package:dingy_mart/providers/cart_notifier.dart';
+import 'package:dingy_mart/db/dingy_mart_db.dart';
 import 'package:dingy_mart/providers/notifiers.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 import '../../app_theme.dart';
 import '../../model/model.dart';
+import '../widgets/common_snackbar.dart';
 
 class WishlistScreen extends StatefulWidget {
   const WishlistScreen({Key? key}) : super(key: key);
@@ -17,6 +19,7 @@ class WishlistScreen extends StatefulWidget {
 
 class _WishlistScreenState extends State<WishlistScreen> {
   final theme = AppTheme.commonTheme();
+ DingyMartDB dingyMartDB = DingyMartDB();
 
   @override
   Widget build(BuildContext context) {
@@ -53,19 +56,14 @@ class _WishlistScreenState extends State<WishlistScreen> {
         ),
         centerTitle: true,
         actions: [
-          TextButton.icon(
+          TextButton(
               onPressed: (){
                 context.read<WishListNotifier>().removeAllProductsFromWishList();
               },
-              icon: const Icon(
-                UniconsLine.trash_alt,
-                color: Colors.red,
-                size: 14.0,
-              ),
-              label: Text(
+              child: Text(
                 'Remove all',
                 style: GoogleFonts.poppins(
-                  fontSize: 10,
+                  fontSize: 15,
                   color: Colors.red,
                 ),
               )
@@ -93,14 +91,7 @@ class _WishlistScreenState extends State<WishlistScreen> {
                         );
                       }
                       final product = wish.wishList[index];
-                      return Dismissible(
-                        key: UniqueKey(),
-                        onDismissed: (direction) {
-                          setState(() {
-                            context.read<WishListNotifier>().removeProductFromWishList(product);
-                          });
-                        },
-                        child: Card(
+                      return Card(
                           color: Colors.white,
                           elevation: 2.0,
                           child: Padding(
@@ -129,14 +120,24 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                       Text(product.price.toString() + '\$' ?? '',
                                         style: theme.textTheme.headline5,
                                       ),
-
                                     ],
                                   ),
                                 ),
+                             IconButton(
+                              onPressed: () {
+                                dingyMartDB.deleteCartItem(product.id);
+                                context.read<WishListNotifier>().removeProductFromWishList(product);
+                                showSnackBar(context, 'Product removed from WishList');
+                               },
+                               icon: const Icon(
+                                   FeatherIcons.trash2,
+                                 color: Colors.red,
+                                 size: 30.0,
+                               ),
+                             ),
                               ],
                             ),
                           ),
-                        ),
                       );
                     }
                 ),

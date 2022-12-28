@@ -7,13 +7,13 @@ import 'package:dingy_mart/model/model.dart';
 import '../../app_theme.dart';
 
 class CartCheckOutScreen extends StatelessWidget {
-  final List<ProductModel> cart;
-  const CartCheckOutScreen({Key? key, required this.cart}) : super(key: key);
+  //final List<ProductModel> cart;
+  const CartCheckOutScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.commonTheme();
-    //final cart = Provider.of<CartNotifier>(context);
+    final cart = Provider.of<CartNotifier>(context);
     return  Scaffold(
       appBar: AppBar(
         foregroundColor: theme.appBarTheme.foregroundColor,
@@ -45,9 +45,9 @@ class CartCheckOutScreen extends StatelessWidget {
             children:[
               Expanded(
                child:  ListView.builder(
-                itemCount: cart.length,
+                itemCount: cart.cart.length,
                 itemBuilder: (BuildContext context, int index){
-                final product = cart[index];
+                final product = cart.cart[index];
                   return  Column(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
