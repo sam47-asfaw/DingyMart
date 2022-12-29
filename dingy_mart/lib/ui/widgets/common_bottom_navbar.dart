@@ -1,6 +1,10 @@
+import 'package:badges/badges.dart';
+import 'package:dingy_mart/providers/cart_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
 import '../../app_theme.dart';
@@ -59,18 +63,35 @@ class _CommonBottomNavBarState extends State<CommonBottomNavBar> {
            ),
           //Todo: cart navbar
            BottomNavigationBarItem(
-            icon: IconButton(
-              icon: Icon(
-                FeatherIcons.shoppingCart,
-                size: theme.iconTheme.size,
-                color: theme.iconTheme.color,
+            icon: Badge(
+              badgeColor: Colors.white,
+              badgeContent: Consumer<CartNotifier>(
+                builder: (context, cart, child) {
+                  return Text(
+                    cart.getCounter().toString(),
+                    style: GoogleFonts.poppins(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w900,
+                      color: Colors.red.shade400,
+                    ),
+                  );
+                },
               ),
-              onPressed: () {
-                Navigator.pushNamed(context, '/cart');
-              },
+              position: const BadgePosition(start: 30, bottom: 30),
+              child: IconButton(
+                icon: Icon(
+                  FeatherIcons.shoppingCart,
+                  size: theme.iconTheme.size,
+                  color: theme.iconTheme.color,
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/cart');
+                },
+              ),
+              ),
+             label: 'MyCart',
             ),
-                label: 'MyCart',
-          ),
+
           //Todo: Profile navbar
            BottomNavigationBarItem(
             icon: IconButton(

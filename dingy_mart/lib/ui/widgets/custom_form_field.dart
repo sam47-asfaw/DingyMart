@@ -4,7 +4,6 @@ import 'package:dingy_mart/app_theme.dart';
 import 'package:dingy_mart/repository/user_dao.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:unicons/unicons.dart';
 import 'common_container.dart';
 
@@ -52,28 +51,35 @@ class _CustomFormFieldState extends State<CustomFormField> {
           child:
             commonContainer(
              Column(
-               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+               mainAxisAlignment: MainAxisAlignment.start,
                crossAxisAlignment: CrossAxisAlignment.center,
                mainAxisSize: MainAxisSize.max,
                children: [
-                      Center(
-                        child: Text(
-                           'DingyMart',
-                           style: theme.textTheme.headline3,
-                         ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
+                        child: Center(
+                          child: Text(
+                             'DingyMart',
+                             style: theme.textTheme.headline2,
+                           ),
+                        ),
                       ),
                   _emailField(width: width / 1.5),
+                  const SizedBox(height: 16.0,),
                   _passwordField(width: width / 1.5),
+                 const SizedBox(height: 35.0,),
                  _buttonField(widget.buttonTitle, context),
-                  _referalLink(widget.buttonTitle, context),
+                 const SizedBox(height: 10.0,),
+                 _referalLink(widget.buttonTitle, context),
+
                ],
              ),
               //TODO: Add optional constraint argument
               const BoxConstraints(
                 minHeight: 0,
                 minWidth: 0,
-                maxHeight: 550,
-                maxWidth: 380,
+                maxHeight: 400,
+                maxWidth: 350,
               ),
               //TODO: Add optional decoration argument
                BoxDecoration(

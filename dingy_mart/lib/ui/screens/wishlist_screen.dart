@@ -59,6 +59,8 @@ class _WishlistScreenState extends State<WishlistScreen> {
           TextButton(
               onPressed: (){
                 context.read<WishListNotifier>().removeAllProductsFromWishList();
+                context.read<WishListNotifier>().turnCounterToZero();
+                showSnackBar(context, 'All products removed from WishList');
               },
               child: Text(
                 'Remove all',
@@ -72,6 +74,15 @@ class _WishlistScreenState extends State<WishlistScreen> {
       ),
       body: Consumer<WishListNotifier>(
         builder:  (BuildContext context, WishListNotifier wish, Widget? child){
+          if (wish.wishList.isEmpty) {
+            return Center(
+              child: Text(
+                    'No products in WishList',
+                    style: theme.textTheme.headline5,
+                textAlign: TextAlign.center,
+              ),
+            );
+          }
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -82,14 +93,6 @@ class _WishlistScreenState extends State<WishlistScreen> {
                   //shrinkWrap: true,
                     itemCount: wish.wishList.length,
                     itemBuilder: (BuildContext context, int index) {
-                      if (wish.wishList.isEmpty) {
-                        return Center(
-                          child: Text(
-                            'No products in WishList',
-                            style: theme.textTheme.headline5,
-                          ),
-                        );
-                      }
                       final product = wish.wishList[index];
                       return Card(
                           color: Colors.white,
@@ -125,8 +128,8 @@ class _WishlistScreenState extends State<WishlistScreen> {
                                 ),
                              IconButton(
                               onPressed: () {
-                                dingyMartDB.deleteCartItem(product.id);
                                 context.read<WishListNotifier>().removeProductFromWishList(product);
+                                wish.decreaseCounter();
                                 showSnackBar(context, 'Product removed from WishList');
                                },
                                icon: const Icon(

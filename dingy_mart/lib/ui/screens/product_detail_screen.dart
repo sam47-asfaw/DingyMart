@@ -366,6 +366,5 @@ class ProductDetailScreen extends StatelessWidget {
     );
   }
 
-
 }
 

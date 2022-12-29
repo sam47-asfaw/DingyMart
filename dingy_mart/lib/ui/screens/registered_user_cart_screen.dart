@@ -4,7 +4,6 @@ import 'package:dingy_mart/ui/screens/screens.dart';
 import 'package:dingy_mart/ui/widgets/common_snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
@@ -70,6 +69,8 @@ class _CartScreenState extends State<CartScreen> {
             TextButton(
                 onPressed: (){
                   context.read<CartNotifier>().removeAllProductsFromCart();
+                  context.read<CartNotifier>().turnCounterToZero();
+                  showSnackBar(context, 'All products removed from Cart');
                 },
                child: Text(
                     'Remove all',
@@ -83,6 +84,15 @@ class _CartScreenState extends State<CartScreen> {
         ),
         body: Consumer<CartNotifier>(
           builder:  (BuildContext context, cart,  child){
+            if (cart.cart.isEmpty) {
+              return Center(
+                child: Text(
+                  'No products in Cart',
+                  style: theme.textTheme.headline5,
+                ),
+              );
+            }
+
             return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -90,65 +100,61 @@ class _CartScreenState extends State<CartScreen> {
                 children:[
                   Expanded(
                     child: ListView.builder(
-                        //shrinkWrap: true,
                       itemCount: cart.cart.length,
                       itemBuilder: (BuildContext context, int index) {
-                        if (cart.cart.isEmpty) {
-                          return Center(
-                            child: Text(
-                              'No products in cart',
-                              style: theme.textTheme.headline5,
-                            ),
-                          );
-                        }
-                        final product = cart.cart[index];
-                        return Card(
-                            color: Colors.white,
-                             elevation: 2.0,
+                          final product = cart.cart[index];
+                          return Dismissible(
+                            key: UniqueKey(),
+                            onDismissed: (direction) {
+                              setState(() {
+                                dingyMartDB.deleteCartItem(product.id);
+                                context.read<CartNotifier>()
+                                    .removeProductFromCart(product);
+                                context.read<CartNotifier>().decreaseCounter();
+                              });
+                              showSnackBar(
+                                  context, 'Product removed from Cart');
+                            },
+                            child: Card(
+                              color: Colors.white,
+                              elevation: 2.0,
                               child: Padding(
                                 padding: const EdgeInsets.all(4.0),
                                 child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Image(
-                                        width: width / 5,
-                                        height: height / 5,
-                                        image: NetworkImage(product.imgUrl),
-                                        ),
-                                      const SizedBox(width: 24.0,),
-                                      SizedBox(
-                                        width: 130,
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            Text(
-                                               product.name ?? '',
-                                              style: theme.textTheme.headline5,
-                                            ),
-                                            const SizedBox(height: 16.0,),
-                                            Text(product.price.toString() + '\$' ?? '',
-                                              style: theme.textTheme.headline5,
-                                            ),
-                                          ],
-                                        ),
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .spaceEvenly,
+                                  children: [
+                                    Image(
+                                      width: width / 5,
+                                      height: height / 5,
+                                      image: NetworkImage(product.imgUrl),
+                                    ),
+                                    const SizedBox(width: 24.0,),
+                                    SizedBox(
+                                      width: 130,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .start,
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Text(
+                                            product.name ?? '',
+                                            style: theme.textTheme.headline5,
+                                          ),
+                                          const SizedBox(height: 16.0,),
+                                          Text(
+                                            product.price.toString() + '\$' ??
+                                                '',
+                                            style: theme.textTheme.headline5,
+                                          ),
+                                        ],
                                       ),
-                                         IconButton(
-                                          onPressed: () {
-                                            dingyMartDB.deleteCartItem(product.id);
-                                            context.read<CartNotifier>().removeProductFromCart(product);
-                                            showSnackBar(context, 'Product removed from Cart');
-                                          },
-                                          icon: const Icon(
-                                            FeatherIcons.trash2,
-                                          color: Colors.red,
-                                          size: 30.0,
-                                         ),
-                                        ),
-                                    ],
+                                    ),
+                                  ],
                                 ),
                               ),
+                            ),
                           );
                           }
                          ),

@@ -21,7 +21,7 @@ class UserDAO {
     }
 
     String? email(){
-      return _auth.currentUser?.email;
+      return _auth.currentUser!.email;
     }
 
     //Email and password sign up

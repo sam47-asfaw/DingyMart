@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
-
-import '../../app_theme.dart';
-
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.commonTheme();
-    String assetName = 'assets/splashScreen/splash_screen.jpg';
+    String assetName = 'assets/splashScreen/online_shopping_monochromatic.svg';
     return Scaffold(
-            body: Center(
-                child: Text(
-                 'DingyMart',
-                  style: theme.textTheme.headline1,
-                ),
-            ),
-    );
+            body:  Stack(
+                       children:[
+                       Flexible(
+                         fit: FlexFit.tight,
+                           child: SvgPicture.asset(
+                            assetName,
+                             alignment: Alignment.center,
+                             fit: BoxFit.contain,
+                           ),
+                       ),
+                     ],
+                     ),
+           );
   }
 }

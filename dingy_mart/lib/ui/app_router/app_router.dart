@@ -85,7 +85,7 @@ class AppRouter{
       //   );
       case '/profile':
         return MaterialPageRoute(
-            builder: (_) =>  ProfileScreen()
+            builder: (_) =>  const ProfileScreen()
         );
 
       case '/sports':
