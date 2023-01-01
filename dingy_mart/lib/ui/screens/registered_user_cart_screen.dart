@@ -85,11 +85,23 @@ class _CartScreenState extends State<CartScreen> {
         body: Consumer<CartNotifier>(
           builder:  (BuildContext context, cart,  child){
             if (cart.cart.isEmpty) {
-              return Center(
-                child: Text(
-                  'No products in Cart',
-                  style: theme.textTheme.headline5,
-                ),
+              return Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Image.asset(
+                    'assets/empty_cart_image/empty_cart.jpg',
+                    alignment: Alignment.center,
+                    fit: BoxFit.fill,
+                  ),
+                  const SizedBox(height: 16.0,),
+                  Center(
+                    child: Text(
+                      'Your Cart is empty',
+                      style: theme.textTheme.headline4,
+                    ),
+                  ),
+                ],
               );
             }
 

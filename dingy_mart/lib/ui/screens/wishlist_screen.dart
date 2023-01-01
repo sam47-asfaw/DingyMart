@@ -75,12 +75,23 @@ class _WishlistScreenState extends State<WishlistScreen> {
       body: Consumer<WishListNotifier>(
         builder:  (BuildContext context, WishListNotifier wish, Widget? child){
           if (wish.wishList.isEmpty) {
-            return Center(
-              child: Text(
-                    'No products in WishList',
-                    style: theme.textTheme.headline5,
-                textAlign: TextAlign.center,
-              ),
+            return  Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Image.asset(
+                  'assets/empty_cart_image/undraw_shopping_app.png',
+                  alignment: Alignment.center,
+                  fit: BoxFit.fill,
+                ),
+                const SizedBox(height: 16.0,),
+                Center(
+                  child: Text(
+                    'Your WishList is empty',
+                    style: theme.textTheme.headline4,
+                  ),
+                ),
+              ],
             );
           }
           return Column(

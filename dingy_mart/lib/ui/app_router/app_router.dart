@@ -24,7 +24,7 @@ class AppRouter{
         );
       case '/search':
         return MaterialPageRoute(
-            builder: (_) => const SearchScreen(appBarTitle: 'DingyMart',)
+            builder: (_) => const SearchScreen(),
         );
       case '/accessories':
         return MaterialPageRoute(
@@ -37,13 +37,9 @@ class AppRouter{
 
       case '/cart':
         return MaterialPageRoute(
-            builder: (_) => CartScreen()
+            builder: (_) => const CartScreen()
         );
 
-      case '/emptyCart':
-        return MaterialPageRoute(
-            builder: (_) => const EmptyCartScreen()
-        );
 
       case '/categories':
         return MaterialPageRoute(

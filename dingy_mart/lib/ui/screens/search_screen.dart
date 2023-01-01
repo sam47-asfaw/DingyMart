@@ -1,15 +1,16 @@
-import 'dart:ui';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dingy_mart/ui/screens/product_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-
+import 'package:provider/provider.dart';
+import 'package:unicons/unicons.dart';
 import '../../app_theme.dart';
+import '../../model/product_model.dart';
+import '../../repository/product_dao.dart';
 
 class SearchScreen extends StatefulWidget {
-  final String appBarTitle;
   const SearchScreen({
     Key? key,
-    required this.appBarTitle,
   }) : super(key: key);
 
   @override
@@ -17,14 +18,20 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final _searchController = TextEditingController();
-  final theme = AppTheme.commonTheme();
 
-  @override
-  void dispose() {
-    // TODO: implement initState
-    super.dispose();
-    _searchController.dispose();
+  final theme = AppTheme.commonTheme();
+  List searchResult = [];
+
+  void searchFromFireStore(String productName) async{
+    final result = await  FirebaseFirestore.instance.collection('products')
+        .where('name', isEqualTo: productName)
+        .get();
+    setState(() {
+      searchResult = result.docs.map(
+              (doc) => ProductModel.fromJson(doc.data())
+      ).toList();
+    });
+
   }
 
   @override
@@ -32,50 +39,160 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
-          leadingWidth: double.infinity,
-          leading: Center(
-            child: Text(
-              widget.appBarTitle,
-              style: theme.textTheme.headline2,
-            ),
+          leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                color: Colors.indigo,
+                iconSize: theme.iconTheme.size,
+                icon: const Icon(UniconsLine.arrow_left),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+              );
+            },
           ),
           title: SizedBox(
-            width: double.infinity,
-            height: 50,
-              child: _buildSearchBar(context, theme),
+           width: MediaQuery.of(context).size.width,
+              height:50,
+              child:  TextField(
+                  obscureText: false,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(
+                      UniconsLine.search_alt,
+                      color: Colors.indigo.shade100,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16.0),
+                      borderSide: BorderSide(
+                          color: Colors.indigo.shade50,
+                          width: 2
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16.0),
+                      borderSide: BorderSide(
+                          color: Colors.indigo.shade400,
+                          width: 2
+                      ),
+                    ),
+                    label: Text(
+                      'Search for product',
+                      style: theme.textTheme.headline6,
+                    ),
+                  ),
+                onChanged: (productName){
+                    searchFromFireStore(productName);
+                },
+                ),
+              ),
           ),
-          ),
+          body: ListView.builder(
+            itemCount: searchResult.length,
+              itemBuilder: (BuildContext context, int index) {
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ProductDetailScreen(product: searchResult[index]),
+                      ),
+                    );
+                  },
+                  child: ListTile(
+                    title: Text(
+                      searchResult[index].name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.headline4,
+                    ),
+                    subtitle: Text(
+                      searchResult[index].description,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.headline6,
+                    ),
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(searchResult[index].imgUrl),
+                    ),
+                  ),
+                );
+              },
+    ),
+
+
+    //  FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+    //       future: Provider.of<ProductDAO>(context).getAllProducts(),
+    //       builder: (context, snapshot) {
+    //         QuerySnapshot querySnapshot = snapshot.data!;
+    //         final List<QueryDocumentSnapshot> documents = querySnapshot.docs;
+    //         List<ProductModel> allProductsList = documents.map(
+    //                 (doc) => ProductModel.fromJson(doc.data() as Map<String, dynamic>)
+    //         ).toList();
+    //
+    //         return (snapshot.connectionState == ConnectionState.waiting)
+    //             ? const Center(
+    //           child: CircularProgressIndicator(),
+    //         )
+    //             : ListView.builder(
+    //             itemCount: allProductsList.length,
+    //             itemBuilder: (context, index) {
+    //               if (name.isEmpty) {
+    //                 return ListTile(
+    //                     title: Text(
+    //                       allProductsList[index].name,
+    //                       maxLines: 1,
+    //                       overflow: TextOverflow.ellipsis,
+    //                       style: theme.textTheme.headline4,
+    //                     ),
+    //                     subtitle: Text(
+    //                       allProductsList[index].description,
+    //                       maxLines: 1,
+    //                       overflow: TextOverflow.ellipsis,
+    //                       style: theme.textTheme.headline6,
+    //                     ),
+    //                     leading: CircleAvatar(
+    //                       backgroundImage: NetworkImage(allProductsList[index].imgUrl),
+    //                     ),
+    //                   );
+    //               }
+    //               if (allProductsList[index].name
+    //                   .toString()
+    //                   .toLowerCase()
+    //                   .startsWith(name.toLowerCase())) {
+    //                 return InkWell(
+    //                   onTap: (){
+    //                     Navigator.push(
+    //                       context,
+    //                       MaterialPageRoute(
+    //                         builder: (context) => ProductDetailScreen(product: allProductsList[index]),
+    //                       ),
+    //                     );
+    //                   },
+    //                   child: ListTile(
+    //                     title: Text(
+    //                       allProductsList[index].name,
+    //                       maxLines: 1,
+    //                       overflow: TextOverflow.ellipsis,
+    //                       style: theme.textTheme.headline4,
+    //                     ),
+    //                     subtitle: Text(
+    //                       allProductsList[index].description,
+    //                       maxLines: 1,
+    //                       overflow: TextOverflow.ellipsis,
+    //                       style: theme.textTheme.headline6,
+    //                     ),
+    //                     leading: CircleAvatar(
+    //                       backgroundImage: NetworkImage(allProductsList[index].imgUrl),
+    //                     ),
+    //                   ),
+    //                 );
+    //               }
+    //               return Container();
+    //             });
+    //       },
+    //     ),
     );
   }
 
-  Widget _buildSearchBar(BuildContext context, ThemeData theme) {
-    return TextField(
-        controller: _searchController,
-        obscureText: false,
-        decoration: InputDecoration(
-          prefixIcon: Icon(
-            FeatherIcons.search,
-            color: Colors.indigo.shade100,
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: BorderSide(
-                color: Colors.indigo.shade100,
-                width: 1
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: BorderSide(
-                color: Colors.indigo.shade400,
-                width: 1
-            ),
-          ),
-          label: Text(
-            'Search for...',
-            style: theme.textTheme.headline5,
-          ),
-        ),
-    );
-  }
 }
